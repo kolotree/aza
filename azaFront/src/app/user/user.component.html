@@ -1,0 +1,39 @@
+<div>
+    <h1 class="text-center">{{pageTitle}}</h1>
+    <div class="row">
+        <div class="col-4">
+            <input type="date" class="form-control" placeholder="Datum">
+        </div>
+        <div class="col-4">
+            <input type="text" class="form-control" placeholder="Predmet">
+        </div>
+        <div class="col-4">
+            <button type="button" class="btn btn-outline-secondary btn-block">Pretraži</button>
+        </div>
+    </div>
+    <br>
+    <div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Predmet</th>
+                    <th>Status</th>
+                    <th>Dokumenti</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let case of cases'>
+                    <th>{{case.date}}</th>
+                    <td>{{case.name}}</td>
+                    <td>{{case.status}}</td>
+                    <td>
+                        <ul>
+                            <li *ngFor='let doc of case.documents'>{{doc}}</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

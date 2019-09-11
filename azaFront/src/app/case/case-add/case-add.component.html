@@ -1,0 +1,42 @@
+<div>
+    <h1 class="text-center">{{pageTitle}}</h1>
+    <div class="row justify-content-md-center">        
+        <form #caseForm='ngForm' (ngSubmit)='onSubmit()' class="w-50" novalnameate>
+            <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Ime i prezime klijenta:</label>
+                <div class="col-sm">
+                    <input type="text" readonly class="form-control-plaintext" name="staticUser" [(ngModel)]='caseModel.user'>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Naziv</label>
+                <input type="text" required #namec='ngModel'
+                [class.is-invalid]="namec.invalid && namec.touched" class="form-control" 
+                name="namec" placeholder="Naziv" [(ngModel)]='caseModel.name'>
+                <small class="text-danger" [class.d-none]='namec.valid || namec.untouched'>Morate popunit polje</small>
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select (blur)="validateStatus(status.value)" (change)="validateStatus(status.value)"
+                #status="ngModel" [class.is-invalid]="statusHasError && status.touched" 
+                class="custom-select" name="status" [(ngModel)]='caseModel.status'>
+                    <option value="">Status</option>
+                    <option *ngFor="let status of caseStatus">{{status}}</option>
+                </select>
+                <small class="text-danger" [class.d-none]='!statusHasError || status.untouched'>Morate izabrati polje</small>
+            </div>
+            <div class="form-group">
+                <label>Datum</label>
+                <input type="date" required #date="ngModel"
+                [class.is-invalid]="date.invalid && date.touched" class="form-control" 
+                name="date" placeholder="Datum" [(ngModel)]='caseModel.date'>
+                <small class="text-danger" [class.d-none]='date.valid || date.untouched'>Morate popunit polje</small>
+            </div> 
+            <div class="form-group">
+                <label>Dokumenta</label>
+                <input type="text" class="form-control" name="documents" placeholder="Dokumenta" [(ngModel)]='caseModel.documents[0]'>
+            </div>
+            <button [disabled]='caseForm.form.invalid || statusHasError' type="submit" class="btn btn-outline-secondary btn-block">Dodaj</button>
+        </form>
+    </div>
+</div>

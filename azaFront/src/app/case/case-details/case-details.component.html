@@ -1,0 +1,47 @@
+<div>
+    <h1 class="text-center">{{pageTitle}}</h1>
+    <div class="row">   
+        <div class="col-3">
+            Ime i prezime klijenta:
+        </div>    
+        <div class="col-3">
+            {{case.user}}
+        </div> 
+    </div>
+    <div class="row">   
+        <div class="col-3">
+            Naziv:
+        </div>    
+        <div class="col-3">
+            {{case.name}}
+        </div> 
+    </div>
+    <div class="row">   
+        <div class="col-3">
+            Datum:
+        </div>    
+        <div class="col-3">
+            {{case.date}}
+        </div> 
+    </div>
+    <div class="row h-50">   
+        <div class="col-3">
+            Status:
+        </div>    
+        <div class="col-3" *ngIf='!changeStatus'>
+            {{case.status}}
+        </div> 
+        <div class="col-3" *ngIf='changeStatus'>
+            <select class="form-control" name="status" [(ngModel)]='case.status'>
+                <option *ngFor="let status of caseStatus">{{status}}</option>
+            </select>
+        </div> 
+        <div class="col-3">
+            <button type="button" class="btn btn-outline-secondary btn-sm btn-block" (click)='statusAction()'>{{statusButton}}</button>    
+        </div> 
+    </div>
+    <h2>Dokumenti: </h2>
+    <ol>
+        <li *ngFor="let doc of case.documents">{{doc}}</li>
+    </ol>
+</div>

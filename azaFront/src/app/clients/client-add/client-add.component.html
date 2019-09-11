@@ -1,0 +1,36 @@
+<div>
+    <h1 class="text-center">{{pageTitle}}</h1>
+    <div class="row justify-content-md-center">        
+        <form #userForm='ngForm' (ngSubmit)='onSubmit()' class="w-50" novalidate>
+            <div class="form-group">
+                <label>Ime</label>
+                <input type="text" required #name='ngModel' 
+                [class.is-invalid]="name.invalid && name.touched" class="form-control"
+                name="nameUser" placeholder="Ime" [(ngModel)]='userModel.name'>
+                <small class="text-danger" [class.d-none]='name.valid || name.untouched'>Morate popuniti polje</small>
+            </div>
+            <div class="form-group">
+                <label>Prezime</label>
+                <input type="text" required #surname='ngModel' 
+                [class.is-invalid]="surname.invalid && surname.touched" class="form-control" 
+                name="surnameUser" placeholder="Prezime" [(ngModel)]='userModel.surname'>
+                <small class="text-danger" [class.d-none]='surname.valid || surname.untouched'>Morate popuniti polje</small>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" required #email='ngModel' 
+                [class.is-invalid]="email.invalid && email.touched" class="form-control" 
+                name="emailUser" placeholder="Email" [(ngModel)]='userModel.email'> 
+                <small class="text-danger" [class.d-none]='email.valid || email.untouched'>Morate popuniti polje</small>
+            </div>
+            <div class="form-group">
+                <label>Šifra</label>
+                <input type="text" required #password='ngModel' 
+                [class.is-invalid]="password.invalid && password.touched" class="form-control" 
+                name="passwordUser" placeholder="Šifra" [(ngModel)]='userModel.password'>
+                <small class="text-danger" [class.d-none]='password.valid || password.untouched'>Morate popuniti polje</small>
+            </div>
+            <button [disabled]="userForm.form.invalid" class="btn btn-outline-secondary btn-block" type="submit">Dodaj</button>
+        </form>
+    </div>
+</div>

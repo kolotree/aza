@@ -1,0 +1,17 @@
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-5">
+            <h1>{{pageTitle}}</h1>
+            <form #loginForm='ngForm' (ngSubmit)='onSubmit()' novalidate>
+                <div class="form-group">
+                    <label>Šifra</label>
+                    <input type="text" required #login='ngModel'
+                    [class.is-invalid]="login.invalid && login.touched" class="form-control" 
+                    name="login" placeholder="Šifra" [(ngModel)]='password'>
+                    <small class="text-danger" [class.d-none]='login.valid || login.untouched'>Morate popunit polje</small>
+                </div>
+                <button [disabled]='loginForm.form.invalid' type="submit" class="btn btn-outline-secondary btn-block">Prijavi se</button>
+            </form>
+        </div>
+    </div>
+</div>

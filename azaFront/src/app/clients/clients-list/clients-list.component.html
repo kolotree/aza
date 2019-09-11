@@ -1,0 +1,36 @@
+<div>
+    <h1 class="text-center">{{pageTitle}}</h1>
+    <div class="row">
+        <div class="col-4">
+            <input type="text" class="form-control" placeholder="Ime">
+        </div>
+        <div class="col-4">
+            <input type="text" class="form-control" placeholder="Prezime">
+        </div>
+        <div class="col-4">
+            <button type="button" class="btn btn-outline-secondary btn-block">Pretraži</button>
+        </div>
+    </div>
+    <br>
+    <div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Šifra</th>
+                    <th>Ime</th>
+                    <th>Prezime</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <th>{{user.password}}</th>
+                    <td>{{user.name}}</td>
+                    <td>{{user.surname}}</td>
+                    <td><button type="button" class="btn btn-outline-secondary btn-sm btn-block" (click)='details(user.password)'>Detalji</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
