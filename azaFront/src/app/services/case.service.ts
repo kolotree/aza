@@ -1,28 +1,58 @@
 import { Injectable } from "@angular/core";
 import { Case } from '../model/case';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CaseService {
+
+    constructor(private http: HttpClient) { }
     
-    cases: Case[] = [
-        new Case('1', 'Marko Marković', 'Žalba', "U procesu", '01.01.2001.', ['a', 'b', 'c']),
-        new Case('2', 'Marko Marković', 'Žalba', "U procesu", '01.01.2001.', []),
-        new Case('3', 'Marko Marković', 'Žalba', "U procesu", '01.01.2001.', []),
-        new Case('4', 'Marko Marković', 'Žalba', "U procesu", '01.01.2001.', [])
-    ]
-
-    getCase(id: string): Case{
-        return this.cases.find((c: Case) => c.id === id);
-    }
-    getCases(): Case[]{
-        return this.cases;
+    getCase(id: string): Observable<Case | undefined>{
+        return this.http.get<Case>("http://localhost:8080/case/" + id)
+            .pipe(
+                catchError(this.handleError)
+            );
     }
 
-    getCasesUser(id: string): Case[]{
-        console.log(id);
-        return this.cases;
+    getCasesUser(id: string): Observable<Case[]>{
+        return this.http.get<Case[]>("http://localhost:8080/client/case/" + id)
+            .pipe(
+                catchError(this.handleError)
+            );
+    }
+
+    createCase(c: Case): Observable<Case | undefined> {
+        return this.http.post<Case>("http://localhost:8080/case", c)
+            .pipe(
+                catchError(this.handleError)
+            );
+    }
+
+    updateCaseStatus(c: Case): Observable<Case | undefined> {
+        return this.http.put<Case>("http://localhost:8080/case", c)
+            .pipe(
+                catchError(this.handleError)
+            );
+    }
+    
+    private handleError(err: HttpErrorResponse) {
+        // in a real world app, we may send the server to some remote logging infrastructure
+        // instead of just logging it to the console
+        let errorMessage = '';
+        if (err.error instanceof ErrorEvent) {
+        // A client-side or network error occurred. Handle it accordingly.
+        errorMessage = `An error occurred: ${err.error.message}`;
+        } else {
+        // The backend returned an unsuccessful response code.
+        // The response body may contain clues as to what went wrong,
+        errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(errorMessage);
     }
 
 }

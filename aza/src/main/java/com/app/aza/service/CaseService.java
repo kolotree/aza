@@ -40,7 +40,15 @@ public class CaseService {
 			return null;
 		}
 		c.setUser(user);
-		Case crC = caseRepository.save(c);
-		return new CaseDTO(crC);
+		return new CaseDTO(caseRepository.save(c));
+	}
+	
+	public CaseDTO updateStatus(CaseDTO caseDTO) {
+		Case c = caseRepository.findById(caseDTO.getId()).get();
+		if(c == null) {
+			return null;
+		}
+		c.setStatus(caseDTO.getStatus());
+		return new CaseDTO(caseRepository.save(c));
 	}
 }

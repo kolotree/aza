@@ -50,4 +50,14 @@ public class CaseController {
 			CaseDTO crCase = caseService.create(caseDTO);
 			return new ResponseEntity<>(crCase, HttpStatus.OK);
 	}
+	
+	@RequestMapping(
+			value = "/case",
+			method = RequestMethod.PUT,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<CaseDTO> updateStatus(@RequestBody CaseDTO caseDTO){
+			CaseDTO crCase = caseService.updateStatus(caseDTO);
+			return new ResponseEntity<>(crCase, HttpStatus.OK);
+	}
 }

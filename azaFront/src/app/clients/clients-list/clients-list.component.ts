@@ -27,7 +27,7 @@ export class ClientsListComponent implements OnInit {
     });
   }
 
-  details(password: string): void {
-    this.router.navigate(['/client/' + password]);
+  details(id: string): void {
+    this.router.navigate(['/client/' + id]);
   }
 }

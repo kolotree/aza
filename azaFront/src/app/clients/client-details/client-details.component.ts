@@ -21,11 +21,11 @@ export class ClientDetailsComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.userService.getUser(id).subscribe({
-      next: user => {
-        this.client = user;
-      },
-      error: err => this.errorMessage = err
-    });
+        next: user => {
+          this.client = user;
+        },
+        error: err => this.errorMessage = err
+      });
     }
   }
 

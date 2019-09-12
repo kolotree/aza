@@ -17,8 +17,8 @@ const routes: Routes = [
   { path: 'case', component: CaseListComponent },
   { path: 'case/:id', component: CaseDetailsComponent },
   { path: 'addClient', component: ClientAddComponent },
-  { path: 'addCase', component: CaseAddComponent},
-  { path: 'user', component: UserComponent},
+  { path: 'addCase/:id', component: CaseAddComponent},
+  { path: 'user/:id', component: UserComponent},
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];

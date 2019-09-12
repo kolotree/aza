@@ -32,10 +32,10 @@
                 name="date" placeholder="Datum" [(ngModel)]='caseModel.date'>
                 <small class="text-danger" [class.d-none]='date.valid || date.untouched'>Morate popunit polje</small>
             </div> 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label>Dokumenta</label>
                 <input type="text" class="form-control" name="documents" placeholder="Dokumenta" [(ngModel)]='caseModel.documents[0]'>
-            </div>
+            </div> -->
             <button [disabled]='caseForm.form.invalid || statusHasError' type="submit" class="btn btn-outline-secondary btn-block">Dodaj</button>
         </form>
     </div>

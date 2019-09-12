@@ -11,7 +11,8 @@ import { CaseService } from 'src/app/services/case.service';
 export class CaseDetailsComponent implements OnInit {
 
   pageTitle: string = 'Predmet';
-  case: Case | undefined;
+  case: Case = new Case();
+  errorMessage: string = '';
   statusButton: string = 'Izmeni status';
   changeStatus: boolean = false;
   caseStatus: string[] = [
@@ -26,12 +27,13 @@ export class CaseDetailsComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.getCase(id);
+      this.caseService.getCase(id).subscribe({
+        next: c => {
+          this.case = c;
+        },
+        error: err => this.errorMessage = err
+      });
     }
-  }
-
-  getCase(id: string): void{
-    this.case = this.caseService.getCase(id);
   }
 
   statusAction(): void{
@@ -39,6 +41,12 @@ export class CaseDetailsComponent implements OnInit {
       this.statusButton = 'Izmeni';
       this.changeStatus = true;
     } else {
+      this.caseService.updateCaseStatus(this.case).subscribe({
+        next: c => {
+          this.case = c;
+        },
+        error: err => this.errorMessage = err
+      });
       this.statusButton = 'Izmeni status';
       this.changeStatus = false;
     }

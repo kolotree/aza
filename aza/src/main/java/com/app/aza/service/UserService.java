@@ -33,6 +33,7 @@ public class UserService {
 		if(user.getId() != null) {
 			return null;
 		}
+		user.setRole("user");
 		User crUser = userRepository.save(user);
 		return new UserDTO(crUser);
 	}

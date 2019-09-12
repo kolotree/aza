@@ -13,6 +13,7 @@ export class CaseListComponent implements OnInit {
   
   pageTitle: string = 'Predmeti';
   cases: Case[] = [];
+  errorMessage: string = '';
   caseStatus: string[] = [
     'U procesu',
     'Odbijen',
@@ -26,17 +27,14 @@ export class CaseListComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.getUserCases(id);
+       this.caseService.getCasesUser(id).subscribe({
+        next: cases => {
+          this.cases = cases;
+        },
+        error: err => this.errorMessage = err
+      });
     }
-    this.getCases();
-  }
-
-  getUserCases(id: string): void {
-    this.cases = this.caseService.getCasesUser(id);
-  }
-
-  getCases(): void{
-    this.cases = this.caseService.getCases();
+    // dodati ako je potrebno za listu svih predmeta nezavisno od toga koji korisnik je u pitanju 
   }
 
   details(id: string): void{
@@ -44,7 +42,8 @@ export class CaseListComponent implements OnInit {
   }
 
   add(): void{
-    this.router.navigate(['/addCase']);
+    const id = this.route.snapshot.paramMap.get('id');
+    this.router.navigate(['/addCase/' + id]);
   }
 
 }
