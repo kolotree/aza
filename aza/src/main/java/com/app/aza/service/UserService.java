@@ -1,10 +1,12 @@
 package com.app.aza.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.aza.dto.UserDTO;
 import com.app.aza.model.User;
 import com.app.aza.repository.UserRepository;
 
@@ -14,28 +16,28 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public Collection<User> findAll(){
+	public Collection<UserDTO> findAll(){
 		Collection<User> users = userRepository.findAll();
-		User user = null;
-		for (User u : users) {
-			if(u.getRole().equalsIgnoreCase("admin")) {
-				user = u;
-				break;
+		Collection<UserDTO> usersDTO = new ArrayList<>();
+		for (User user : users) {
+			if(user.getRole().equalsIgnoreCase("admin")) {
+				continue;
 			}
+			usersDTO.add(new UserDTO(user));
 		}
-		users.remove(user);
-		return users;
+		return usersDTO;
 	}
 	
-	public User create(User user) {
+	public UserDTO create(UserDTO userDTO) {
+		User user = new User(userDTO);
 		if(user.getId() != null) {
 			return null;
 		}
 		User crUser = userRepository.save(user);
-		return crUser;
+		return new UserDTO(crUser);
 	}
 	
-	public User findOne(Long id) {
-		return userRepository.findById(id).get();
+	public UserDTO findOne(Long id) {
+		return new UserDTO(userRepository.findById(id).get());
 	}
 }

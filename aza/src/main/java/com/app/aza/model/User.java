@@ -1,11 +1,19 @@
 package com.app.aza.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.app.aza.dto.UserDTO;
 
 @Entity
 @Table(name = "user")
@@ -31,7 +39,10 @@ public class User {
 	@Column(name = "role")
 	private String role;
 
-	public User(long id, String name, String surname, String email, String password, String role) {
+	@OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Case> cases;
+
+	public User(Long id, String name, String surname, String email, String password, String role, Set<Case> cases) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -39,6 +50,18 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.cases = cases;
+	}
+	
+	public User(UserDTO user) {
+		super();
+		this.id = user.getId();
+		this.name = user.getName();
+		this.surname = user.getSurname();
+		this.email = user.getEmail();
+		this.password = user.getPassword();
+		this.role = user.getRole();
+		this.cases = new HashSet<>();
 	}
 
 	public User() {
@@ -91,6 +114,14 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public Set<Case> getCases() {
+		return cases;
+	}
+
+	public void setCases(Set<Case> cases) {
+		this.cases = cases;
 	}
 	
 }
