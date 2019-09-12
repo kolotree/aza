@@ -12,13 +12,19 @@ export class ClientsListComponent implements OnInit {
 
   pageTitle: string = 'Klijenti';
   users: User[] = [];
+  errorMessage: string = '';
 
   constructor(
     private userService: UserService,
     private router: Router) { }
 
   ngOnInit() {
-    this.users = this.userService.getUsers();
+    this.userService.getUsers().subscribe({
+      next: users => {
+        this.users = users;
+      },
+      error: err => this.errorMessage = err
+    });
   }
 
   details(password: string): void {

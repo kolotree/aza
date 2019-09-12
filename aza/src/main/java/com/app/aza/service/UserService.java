@@ -15,7 +15,16 @@ public class UserService {
 	private UserRepository userRepository;
 	
 	public Collection<User> findAll(){
-		return userRepository.findAll();
+		Collection<User> users = userRepository.findAll();
+		User user = null;
+		for (User u : users) {
+			if(u.getRole().equalsIgnoreCase("admin")) {
+				user = u;
+				break;
+			}
+		}
+		users.remove(user);
+		return users;
 	}
 	
 	public User create(User user) {

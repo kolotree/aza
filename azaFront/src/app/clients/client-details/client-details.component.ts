@@ -11,7 +11,8 @@ import { UserService } from 'src/app/services/user.service';
 export class ClientDetailsComponent implements OnInit {
 
   pageTitle: string = 'Klijent'
-  client: User | undefined;
+  client: User = new User();
+  errorMessage: string = '';
 
   constructor(private route: ActivatedRoute,
     private userService: UserService) { }
@@ -19,11 +20,13 @@ export class ClientDetailsComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.getClietn(id);
+      this.userService.getUser(id).subscribe({
+      next: user => {
+        this.client = user;
+      },
+      error: err => this.errorMessage = err
+    });
     }
   }
 
-  getClietn(id: string): void{
-    this.client = this.userService.getUser(id);
-  }
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/user';
+import { UserService } from 'src/app/services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-add',
@@ -9,15 +11,23 @@ import { User } from 'src/app/model/user';
 export class ClientAddComponent implements OnInit {
 
   pageTitle: string = 'Dodavanje klijenta';
-  userModel: User = new User('', '', '', '');
+  userModel: User = new User();
+  errorMessage: string = '';
 
-  constructor() { }
+  constructor(
+    private userService: UserService,
+    private router: Router) { }
 
   ngOnInit() {
   }
   
   onSubmit(): void {
-    console.log(this.userModel);
+    this.userService.crateUser(this.userModel).subscribe({
+      next: user => {
+        this.router.navigate(['/client/' + user.id]);
+      },
+      error: err => this.errorMessage = err
+    });
   }
 
 }
