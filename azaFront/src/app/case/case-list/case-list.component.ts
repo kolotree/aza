@@ -10,15 +10,19 @@ import { CaseService } from 'src/app/services/case.service';
 })
 export class CaseListComponent implements OnInit {
 
-  
   pageTitle: string = 'Predmeti';
   cases: Case[] = [];
+  casesSearch: Case[] = [];
   errorMessage: string = '';
   caseStatus: string[] = [
     'U procesu',
     'Odbijen',
     'Prihvaćen'
-  ]
+  ];
+  searchName: string = '';
+  searchStatus: string = '';
+  searchDate: string = '';
+
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -29,12 +33,20 @@ export class CaseListComponent implements OnInit {
     if (id) {
        this.caseService.getCasesUser(id).subscribe({
         next: cases => {
-          this.cases = cases;
+           this.cases = cases;
+           this.casesSearch = cases;
         },
         error: err => this.errorMessage = err
       });
     }
     // dodati ako je potrebno za listu svih predmeta nezavisno od toga koji korisnik je u pitanju 
+  }
+
+  searchCases(): void{
+    this.casesSearch = this.cases.filter((c: Case) =>
+      c.name.toLocaleLowerCase().indexOf(this.searchName.toLocaleLowerCase()) !== -1
+      && c.status.toLocaleLowerCase().indexOf(this.searchStatus.toLocaleLowerCase()) !== -1
+      && c.date.indexOf(this.searchDate) !== -1);
   }
 
   details(id: string): void{

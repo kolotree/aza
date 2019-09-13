@@ -12,6 +12,9 @@ export class ClientsListComponent implements OnInit {
 
   pageTitle: string = 'Klijenti';
   users: User[] = [];
+  usersSearch: User[] = [];
+  searchName: string = '';
+  searchSurname: string = '';
   errorMessage: string = '';
 
   constructor(
@@ -22,11 +25,18 @@ export class ClientsListComponent implements OnInit {
     this.userService.getUsers().subscribe({
       next: users => {
         this.users = users;
+        this.usersSearch = users;
       },
       error: err => this.errorMessage = err
     });
   }
 
+  searchUsers(): void{
+    this.usersSearch = this.users.filter((user: User) =>
+      user.name.toLocaleLowerCase().indexOf(this.searchName.toLocaleLowerCase()) !== -1
+      && user.surname.toLocaleLowerCase().indexOf(this.searchSurname.toLocaleLowerCase()) !== -1);
+  }
+  
   details(id: string): void {
     this.router.navigate(['/client/' + id]);
   }

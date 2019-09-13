@@ -2,13 +2,13 @@
     <h1 class="text-center">{{pageTitle}}</h1>
     <div class="row">
         <div class="col-4">
-            <input type="text" class="form-control" placeholder="Ime">
+            <input type="text" class="form-control" placeholder="Ime" [(ngModel)]='searchName'>
         </div>
         <div class="col-4">
-            <input type="text" class="form-control" placeholder="Prezime">
+            <input type="text" class="form-control" placeholder="Prezime" [(ngModel)]='searchSurname'>
         </div>
         <div class="col-4">
-            <button type="button" class="btn btn-outline-secondary btn-block">Pretraži</button>
+            <button type="button" class="btn btn-outline-secondary btn-block" (click)='searchUsers()'>Pretraži</button>
         </div>
     </div>
     <br>
@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let user of users">
+                <tr *ngFor="let user of usersSearch">
                     <th>{{user.password}}</th>
                     <td>{{user.name}}</td>
                     <td>{{user.surname}}</td>

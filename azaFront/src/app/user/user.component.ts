@@ -12,7 +12,10 @@ export class UserComponent implements OnInit {
   
   pageTitle: string = 'Moji predmeti';
   cases: Case[] = [];
+  casesSearch: Case[] = [];
   errorMessage: string = '';
+  searchName: string = '';
+  searchDate: string = '';
   
   constructor(
     private caseService: CaseService,
@@ -24,9 +27,16 @@ export class UserComponent implements OnInit {
       this.caseService.getCasesUser(id).subscribe({
         next: cases => {
           this.cases = cases;
+          this.casesSearch = cases;
         },
         error: err => this.errorMessage = err
       });
     }
+  }
+
+  searchCases(): void{
+    this.casesSearch = this.cases.filter((c: Case) =>
+      c.name.toLocaleLowerCase().indexOf(this.searchName.toLocaleLowerCase()) !== -1
+      && c.date.indexOf(this.searchDate) !== -1);
   }
 }
