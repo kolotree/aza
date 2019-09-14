@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,12 +39,12 @@ public class User {
 	private String password;
 	
 	@Column(name = "role")
-	private String role;
+	private ROLE role;
 
 	@OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Case> cases;
 
-	public User(Long id, String name, String surname, String email, String password, String role, Set<Case> cases) {
+	public User(Long id, String name, String surname, String email, String password, ROLE role, Set<Case> cases) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -60,7 +62,7 @@ public class User {
 		this.surname = user.getSurname();
 		this.email = user.getEmail();
 		this.password = user.getPassword();
-		this.role = user.getRole();
+		this.role = ROLE.fromString(user.getRole());
 		this.cases = new HashSet<>();
 	}
 
@@ -108,11 +110,12 @@ public class User {
 		this.password = password;
 	}
 
-	public String getRole() {
+	public ROLE getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	@Enumerated(EnumType.STRING)
+	public void setRole(ROLE role) {
 		this.role = role;
 	}
 

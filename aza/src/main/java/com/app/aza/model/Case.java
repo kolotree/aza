@@ -1,12 +1,19 @@
 package com.app.aza.model;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.app.aza.dto.CaseDTO;
@@ -26,17 +33,18 @@ public class Case {
 	@Column(name = "date")
 	private String date;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
-	private String status;
-	
-	@Column(name = "documents")
-	private String documents;
+	private STATUS status;
 	
 	@ManyToOne
 	@JoinColumn(name="user", referencedColumnName="id")
 	private User user;
 	
-	public Case(Long id, String name, String date, String status, String documents, User user) {
+	@OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Document> documents;
+	
+	public Case(Long id, String name, String date, STATUS status, Set<Document> documents, User user) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -51,7 +59,7 @@ public class Case {
 		this.id = c.getId();
 		this.name = c.getName();
 		this.date = c.getDate();
-		this.status = c.getStatus();
+		this.status = STATUS.fromString(c.getStatus());
 	}
 	public Case() {
 		super();
@@ -81,19 +89,19 @@ public class Case {
 		this.date = date;
 	}
 
-	public String getStatus() {
+	public STATUS getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(STATUS status) {
 		this.status = status;
 	}
 
-	public String getDocuments() {
+	public Set<Document> getDocuments() {
 		return documents;
 	}
 
-	public void setDocuments(String documents) {
+	public void setDocuments(Set<Document> documents) {
 		this.documents = documents;
 	}
 

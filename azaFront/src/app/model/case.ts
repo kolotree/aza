@@ -6,3 +6,7 @@ export class Case{
     public date: string;
     public documents: string[];
 }
+
+export class Status {
+    public name: string;
+}

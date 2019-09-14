@@ -13,14 +13,10 @@ export class CaseAddComponent implements OnInit {
 
   pageTitle: string = 'Dodavanje predmeta';
   caseModel: Case = new Case();
-  errorMessage: string = '';
+  errorMessage: string;
   statusHasError: boolean = true;
-  caseStatus: string[] = [
-    'U procesu',
-    'Odbijen',
-    'Prihvaćen'
-  ]
-  clietnId: string = '';
+  caseStatus: string[] = [];
+  clientId: string;
 
   constructor(private caseService: CaseService,
     private userService: UserService,
@@ -33,15 +29,19 @@ export class CaseAddComponent implements OnInit {
       this.userService.getUser(id).subscribe({
         next: user => {
           this.caseModel.user = user.name + ' ' + user.surname;
-          this.clietnId = user.id;
+          this.clientId = user.id;
         },
         error: err => this.errorMessage = err
+      });
+      this.caseService.getStatus().subscribe(
+        (status: string[]) => {
+          this.caseStatus = status;
       });
     }
   }
 
   onSubmit(): void{
-    this.caseModel.user = this.clietnId;
+    this.caseModel.user = this.clientId;
     this.caseService.createCase(this.caseModel).subscribe({
       next: c => {
         this.router.navigate(['/case/' + c.id]);

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.aza.dto.CaseDTO;
-import com.app.aza.service.CaseService;
+import com.app.aza.serviceimpl.CaseNotFoundException;
+import com.app.aza.serviceimpl.CaseService;
+import com.app.aza.serviceimpl.UserNotFoundException;
 
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
@@ -36,8 +38,13 @@ public class CaseController {
 			value = "/case/{id}",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CaseDTO> getCase(@PathVariable("id") Long id){
-			CaseDTO c = caseService.findOne(id);
+	public ResponseEntity<?> getCase(@PathVariable("id") Long id){
+			CaseDTO c;
+			try {
+				c = caseService.findOne(id);
+			} catch (UserNotFoundException e) {		
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+			}
 			return new ResponseEntity<>(c, HttpStatus.OK);
 	}
 
@@ -46,8 +53,13 @@ public class CaseController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CaseDTO> create(@RequestBody CaseDTO caseDTO){
-			CaseDTO crCase = caseService.create(caseDTO);
+	public ResponseEntity<?> create(@RequestBody CaseDTO caseDTO){
+			CaseDTO crCase;
+			try {
+				crCase = caseService.createOrUpdate(caseDTO);
+			} catch (UserNotFoundException | CaseNotFoundException e) {	
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+			}
 			return new ResponseEntity<>(crCase, HttpStatus.OK);
 	}
 	
@@ -56,8 +68,22 @@ public class CaseController {
 			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CaseDTO> updateStatus(@RequestBody CaseDTO caseDTO){
-			CaseDTO crCase = caseService.updateStatus(caseDTO);
+	public ResponseEntity<?> updateStatus(@RequestBody CaseDTO caseDTO){
+			CaseDTO crCase;
+			try {
+				crCase = caseService.updateStatus(caseDTO);
+			} catch (CaseNotFoundException e) {		
+				return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+			}
 			return new ResponseEntity<>(crCase, HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "/status",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<String>> getStatus(){
+			Collection<String> s = caseService.allStatus();
+			return new ResponseEntity<>(s, HttpStatus.OK);
 	}
 }

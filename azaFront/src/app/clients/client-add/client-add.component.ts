@@ -22,7 +22,7 @@ export class ClientAddComponent implements OnInit {
   }
   
   onSubmit(): void {
-    this.userService.crateUser(this.userModel).subscribe({
+    this.userService.createUser(this.userModel).subscribe({
       next: user => {
         this.router.navigate(['/client/' + user.id]);
       },

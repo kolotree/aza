@@ -15,11 +15,7 @@ export class CaseDetailsComponent implements OnInit {
   errorMessage: string = '';
   statusButton: string = 'Izmeni status';
   changeStatus: boolean = false;
-  caseStatus: string[] = [
-    'U procesu',
-    'Odbijen',
-    'Prihvaćen'
-  ]
+  caseStatus: string[] = []
 
   constructor(private route: ActivatedRoute,
     private caseService: CaseService) { }
@@ -32,6 +28,10 @@ export class CaseDetailsComponent implements OnInit {
           this.case = c;
         },
         error: err => this.errorMessage = err
+      });
+      this.caseService.getStatus().subscribe(
+        (status: string[]) => {
+          this.caseStatus = status;
       });
     }
   }

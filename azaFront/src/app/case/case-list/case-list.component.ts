@@ -14,11 +14,7 @@ export class CaseListComponent implements OnInit {
   cases: Case[] = [];
   casesSearch: Case[] = [];
   errorMessage: string = '';
-  caseStatus: string[] = [
-    'U procesu',
-    'Odbijen',
-    'Prihvaćen'
-  ];
+  caseStatus: string[] = [];
   searchName: string = '';
   searchStatus: string = '';
   searchDate: string = '';
@@ -37,6 +33,10 @@ export class CaseListComponent implements OnInit {
            this.casesSearch = cases;
         },
         error: err => this.errorMessage = err
+       });
+      this.caseService.getStatus().subscribe(
+        (status: string[]) => {
+          this.caseStatus = status;
       });
     }
     // dodati ako je potrebno za listu svih predmeta nezavisno od toga koji korisnik je u pitanju 

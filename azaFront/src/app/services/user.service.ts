@@ -3,6 +3,7 @@ import { User } from '../model/user';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +13,7 @@ export class UserService {
     constructor(private http: HttpClient) { }
     
     getUsers(): Observable<User[]> {
-        return this.http.get<User[]>("http://localhost:8080/user")
+        return this.http.get<User[]>(environment.apiUrl + "user")
             .pipe(
                 catchError(this.handleError)
             );
@@ -20,19 +21,19 @@ export class UserService {
 
   
     getUser(id: string): Observable<User | undefined> {
-        return this.http.get<User>("http://localhost:8080/user/" + id)
+        return this.http.get<User>(environment.apiUrl + "user/" + id)
             .pipe(
                 catchError(this.handleError)
             );
     }
 
-    crateUser(user: User): Observable<User | undefined>{
-        return this.http.post<User>("http://localhost:8080/user", user)
+    createUser(user: User): Observable<User | undefined>{
+        return this.http.post<User>(environment.apiUrl + "user", user)
             .pipe(
                 catchError(this.handleError)
             );
     }
-    
+
     private handleError(err: HttpErrorResponse) {
         // in a real world app, we may send the server to some remote logging infrastructure
         // instead of just logging it to the console
@@ -45,7 +46,7 @@ export class UserService {
         // The response body may contain clues as to what went wrong,
         errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
         }
-        console.error(errorMessage);
+        window.alert(errorMessage);
         return throwError(errorMessage);
     }
 }

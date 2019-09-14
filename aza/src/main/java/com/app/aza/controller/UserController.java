@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.aza.dto.UserDTO;
-import com.app.aza.service.UserService;
+import com.app.aza.serviceimpl.UserNotFoundException;
+import com.app.aza.serviceimpl.UserService;
 
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
@@ -37,8 +38,13 @@ public class UserController {
 			value = "/user/{id}",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDTO> getUser(@PathVariable("id") Long id){
-		UserDTO user = userService.findOne(id);
+	public ResponseEntity<?> getUser(@PathVariable("id") Long id){
+		UserDTO user = null;
+		try {
+			user = userService.findOne(id);
+		} catch (UserNotFoundException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
@@ -47,8 +53,13 @@ public class UserController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user){
-		UserDTO crUser = userService.create(user);
+	public ResponseEntity<?> createUser(@RequestBody UserDTO user){
+		UserDTO crUser;
+		try {
+			crUser = userService.createOrUpdate(user);
+		} catch (UserNotFoundException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 		return new ResponseEntity<>(crUser, HttpStatus.OK);
 	}
 	

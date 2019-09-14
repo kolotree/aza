@@ -4,17 +4,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.app.aza.model.Case;
+import com.app.aza.model.STATUS;
 
 public class CaseDTO {
 
 	private Long id;
-	private String user;
+	private UserDTO user;
 	private String name;
 	private String date;
 	private String status;
 	private Set<String> documents;
 	
-	public CaseDTO(Long id, String user, String name, String date, String status, Set<String> documents) {
+	public CaseDTO(Long id, UserDTO user, String name, String date, String status, Set<String> documents) {
 		super();
 		this.id = id;
 		this.user = user;
@@ -27,10 +28,10 @@ public class CaseDTO {
 	public CaseDTO(Case c) {
 		super();
 		this.id = c.getId();
-		this.user = c.getUser().getName() + ' ' + c.getUser().getSurname();
+		this.user = new UserDTO(c.getUser());
 		this.name = c.getName();
 		this.date = c.getDate();
-		this.status = c.getStatus();
+		this.status = STATUS.fromEnum(c.getStatus());
 		this.documents = new HashSet<>();
 	}
 
@@ -47,11 +48,11 @@ public class CaseDTO {
 		this.id = id;
 	}
 
-	public String getUser() {
+	public UserDTO getUser() {
 		return user;
 	}
 
-	public void setUser(String user) {
+	public void setUser(UserDTO user) {
 		this.user = user;
 	}
 

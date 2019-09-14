@@ -24,7 +24,7 @@ export class ClientDetailsComponent implements OnInit {
         next: user => {
           this.client = user;
         },
-        error: err => this.errorMessage = err
+        error: err => console.log(err)
       });
     }
   }

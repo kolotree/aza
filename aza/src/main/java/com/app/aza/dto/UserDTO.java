@@ -1,5 +1,6 @@
 package com.app.aza.dto;
 
+import com.app.aza.model.ROLE;
 import com.app.aza.model.User;
 
 public class UserDTO {
@@ -32,7 +33,7 @@ public class UserDTO {
 		this.surname = user.getSurname();
 		this.email = user.getEmail();
 		this.password = user.getPassword();
-		this.role = user.getRole();
+		this.role = ROLE.fromEnum(user.getRole());
 	}
 
 
