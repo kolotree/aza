@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Case } from 'src/app/model/case';
 import { ActivatedRoute } from '@angular/router';
 import { CaseService } from 'src/app/services/case.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-case-details',
@@ -23,12 +24,12 @@ export class CaseDetailsComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.caseService.getCase(id).subscribe({
-        next: c => {
+      this.caseService.getCase(id).subscribe(
+        (c: Case) => {
           this.case = c;
-        },
-        error: err => this.errorMessage = err
-      });
+        }, (err: HttpErrorResponse) => {
+          console.log(err)
+        });
       this.caseService.getStatus().subscribe(
         (status: string[]) => {
           this.caseStatus = status;

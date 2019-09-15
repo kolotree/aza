@@ -23,8 +23,8 @@ public class CaseService implements ICaseService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public CaseDTO findOne(Long id) throws UserNotFoundException {
-		return new CaseDTO(caseRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString())));
+	public CaseDTO findOne(Long id) throws CaseNotFoundException {
+		return new CaseDTO(caseRepository.findById(id).orElseThrow(() -> new CaseNotFoundException(id.toString())));
 	}
 	
 	public Collection<CaseDTO> clientCases(Long id){
@@ -43,7 +43,7 @@ public class CaseService implements ICaseService {
 			c = new Case(caseDTO);
 			c.setUser(user);
 		}else {
-			c = caseRepository.findById(caseDTO.getId()).orElseThrow(() -> new CaseNotFoundException(caseDTO.getId()));
+			c = caseRepository.findById(caseDTO.getId()).orElseThrow(() -> new CaseNotFoundException(caseDTO.getId().toString()));
 			c.setDate(caseDTO.getDate());
 			c.setName(caseDTO.getName());
 			c.setStatus(STATUS.fromString(caseDTO.getStatus()));
@@ -52,7 +52,7 @@ public class CaseService implements ICaseService {
 	}
 	
 	public CaseDTO updateStatus(CaseDTO caseDTO) throws CaseNotFoundException {
-		Case c = caseRepository.findById(caseDTO.getId()).orElseThrow(() -> new CaseNotFoundException(caseDTO.getId()));
+		Case c = caseRepository.findById(caseDTO.getId()).orElseThrow(() -> new CaseNotFoundException(caseDTO.getId().toString()));
 		c.setStatus(STATUS.fromString(caseDTO.getStatus()));
 		return new CaseDTO(caseRepository.save(c));
 	}

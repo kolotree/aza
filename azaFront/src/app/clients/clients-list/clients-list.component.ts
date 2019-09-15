@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-clients-list',
@@ -22,13 +23,13 @@ export class ClientsListComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.userService.getUsers().subscribe({
-      next: users => {
+    this.userService.getUsers().subscribe(
+      (users: User[]) => {
         this.users = users;
         this.usersSearch = users;
-      },
-      error: err => this.errorMessage = err
-    });
+      }, (err: HttpErrorResponse) => {
+        console.log(err)
+      });
   }
 
   searchUsers(): void{

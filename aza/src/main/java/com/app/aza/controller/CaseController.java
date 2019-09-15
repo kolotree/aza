@@ -42,7 +42,7 @@ public class CaseController {
 			CaseDTO c;
 			try {
 				c = caseService.findOne(id);
-			} catch (UserNotFoundException e) {		
+			} catch (CaseNotFoundException e) {	
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 			}
 			return new ResponseEntity<>(c, HttpStatus.OK);

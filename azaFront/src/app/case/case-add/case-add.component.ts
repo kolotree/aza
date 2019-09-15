@@ -3,6 +3,8 @@ import { Case } from 'src/app/model/case';
 import { CaseService } from 'src/app/services/case.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { User } from 'src/app/model/user';
 
 @Component({
   selector: 'app-case-add',
@@ -26,13 +28,13 @@ export class CaseAddComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.userService.getUser(id).subscribe({
-        next: user => {
+      this.userService.getUser(id).subscribe(
+        (user: User) => {
           this.caseModel.user = user.name + ' ' + user.surname;
           this.clientId = user.id;
-        },
-        error: err => this.errorMessage = err
-      });
+        }, (err: HttpErrorResponse) => {
+          console.log(err)
+        });
       this.caseService.getStatus().subscribe(
         (status: string[]) => {
           this.caseStatus = status;
@@ -42,12 +44,12 @@ export class CaseAddComponent implements OnInit {
 
   onSubmit(): void{
     this.caseModel.user = this.clientId;
-    this.caseService.createCase(this.caseModel).subscribe({
-      next: c => {
+    this.caseService.createCase(this.caseModel).subscribe(
+      (c: Case) => {
         this.router.navigate(['/case/' + c.id]);
-      },
-      error: err => this.errorMessage = err
-    });
+      }, (err: HttpErrorResponse) => {
+        console.log(err)
+      });
   }
 
   validateStatus(value: string) {

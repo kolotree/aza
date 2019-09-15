@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Case } from '../model/case';
 import { CaseService } from '../services/case.service';
 import { ActivatedRoute } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-user',
@@ -24,12 +25,12 @@ export class UserComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.caseService.getCasesUser(id).subscribe({
-        next: cases => {
+      this.caseService.getCasesUser(id).subscribe(
+        (cases: Case[]) => {
           this.cases = cases;
           this.casesSearch = cases;
-        },
-        error: err => this.errorMessage = err
+        }, (err: HttpErrorResponse) => {
+          console.log(err)
       });
     }
   }

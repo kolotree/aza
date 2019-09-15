@@ -57,9 +57,8 @@ export class CaseService {
         } else {
         // The backend returned an unsuccessful response code.
         // The response body may contain clues as to what went wrong,
-        errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
+        errorMessage = err.error;
         }
-        window.alert(errorMessage);
         return throwError(errorMessage);
     }
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/user';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-client-details',
@@ -12,7 +13,6 @@ export class ClientDetailsComponent implements OnInit {
 
   pageTitle: string = 'Klijent'
   client: User = new User();
-  errorMessage: string = '';
 
   constructor(private route: ActivatedRoute,
     private userService: UserService) { }
@@ -20,11 +20,11 @@ export class ClientDetailsComponent implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.userService.getUser(id).subscribe({
-        next: user => {
+      this.userService.getUser(id).subscribe(
+        (user: User)=> {
           this.client = user;
-        },
-        error: err => console.log(err)
+        }, (err: HttpErrorResponse) => {
+          console.log(err)
       });
     }
   }

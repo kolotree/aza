@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-client-add',
@@ -22,12 +23,12 @@ export class ClientAddComponent implements OnInit {
   }
   
   onSubmit(): void {
-    this.userService.createUser(this.userModel).subscribe({
-      next: user => {
+    this.userService.createUser(this.userModel).subscribe(
+      (user: User) => {
         this.router.navigate(['/client/' + user.id]);
-      },
-      error: err => this.errorMessage = err
-    });
+      }, (err: HttpErrorResponse) => {
+        console.log(err)
+      });
   }
 
 }
