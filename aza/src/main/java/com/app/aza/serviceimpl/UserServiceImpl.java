@@ -1,7 +1,8 @@
 package com.app.aza.serviceimpl;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collection;import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,22 +11,19 @@ import com.app.aza.dto.UserDTO;
 import com.app.aza.model.ROLE;
 import com.app.aza.model.User;
 import com.app.aza.repository.UserRepository;
-import com.app.aza.service.IUserService;
+import com.app.aza.service.UserService;
 
 @Service
-public class UserService implements IUserService{
+public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private UserRepository userRepository;
 	
 	public Collection<UserDTO> findAll(){
-		Collection<UserDTO> usersDTO = new ArrayList<>();
-		userRepository.findAll().stream().forEach(u -> {
-			if(u.getRole().equals(ROLE.USER)) {
-				usersDTO.add(new UserDTO(u));
-			}
-		});
-		return usersDTO;
+		return userRepository.findAll().stream()
+				.filter(u-> u.getRole().equals(ROLE.USER))
+				.map(u-> new UserDTO(u))
+				.collect(Collectors.toList());
 	}
 	
 	public UserDTO createOrUpdate(UserDTO userDTO) throws UserNotFoundException {

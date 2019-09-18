@@ -2,11 +2,13 @@
     <h1 class="text-center">{{pageTitle}}</h1>
     <div class="row justify-content-md-center">        
         <form #caseForm='ngForm' (ngSubmit)='onSubmit()' class="w-50" novalnameate>
-            <div class="form-group row">
-                <label class="col-sm-5 col-form-label">Ime i prezime klijenta:</label>
-                <div class="col-sm">
-                    <input type="text" readonly class="form-control-plaintext" name="staticUser" [(ngModel)]='caseModel.user'>
-                </div>
+            <div class="form-group">
+                <label>Ime klijenta:</label>
+                <input type="text" readonly class="form-control" name="staticUserName" [(ngModel)]='caseModel.user.name'>
+            </div>
+            <div class="form-group">
+                <label>Prezime klijenta:</label>
+                <input type="text" readonly class="form-control" name="staticUserSurname" [(ngModel)]='caseModel.user.surname'>
             </div>
             <div class="form-group">
                 <label>Naziv</label>

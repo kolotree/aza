@@ -5,7 +5,7 @@
             Ime i prezime klijenta:
         </div>    
         <div class="col-3">
-            {{case.user}}
+            {{case.user.name}} {{case.user.surname}}
         </div> 
     </div>
     <div class="row">   
@@ -41,6 +41,28 @@
         </div> 
     </div>
     <h2>Dokumenti: </h2>
+    <div class="input-group input-group-sm">
+        <label class="input-group-btn">
+            <span class="btn btn-outline-secondary btn-sm"> 
+                Odaberi datoteku<input type="file" style="display: none;" (change)="setFile($event)">
+            </span>
+        </label>
+        <input type="text" class="form-control" readonly [(ngModel)]='fileName'>
+        <label class="input-group-btn" *ngIf="fileName!=null">
+            <span class="btn btn-outline-secondary btn-sm"> 
+                Otpremi<input type="submit" style="display: none;" (click)='upload()'>
+            </span>
+        </label>
+    </div>
+    <div class="progress" *ngIf="uploadProgress != null">
+        <div class="progress-bar bg-primary" role="progressbar" [style.width]="(uploadProgress | async) + '%'" [attr.aria-valuenow]="(uploadProgress | async)" aria-valuemin="0" aria-valuemin="100">
+        </div>
+    </div>
+    <br>
+    <div *ngIf="downloadURL | async; let downloadSrc" class="alert alert-info" role="alert">
+        fajl: <a [href]="downloadSrc">{{downloadSrc}}</a>
+
+    </div>
     <ol>
         <li *ngFor="let doc of case.documents">{{doc}}</li>
     </ol>

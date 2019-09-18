@@ -16,7 +16,6 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Šifra</th>
                     <th>Ime</th>
                     <th>Prezime</th>
                     <th>&nbsp;</th>
@@ -24,7 +23,6 @@
             </thead>
             <tbody>
                 <tr *ngFor="let user of usersSearch">
-                    <th>{{user.password}}</th>
                     <td>{{user.name}}</td>
                     <td>{{user.surname}}</td>
                     <td><button type="button" class="btn btn-outline-secondary btn-sm btn-block" (click)='details(user.id)'>Detalji</button></td>

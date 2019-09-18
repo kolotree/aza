@@ -18,7 +18,6 @@ export class CaseAddComponent implements OnInit {
   errorMessage: string;
   statusHasError: boolean = true;
   caseStatus: string[] = [];
-  clientId: string;
 
   constructor(private caseService: CaseService,
     private userService: UserService,
@@ -30,8 +29,7 @@ export class CaseAddComponent implements OnInit {
     if (id) {
       this.userService.getUser(id).subscribe(
         (user: User) => {
-          this.caseModel.user = user.name + ' ' + user.surname;
-          this.clientId = user.id;
+          this.caseModel.user = user;
         }, (err: HttpErrorResponse) => {
           console.log(err)
         });
@@ -43,7 +41,6 @@ export class CaseAddComponent implements OnInit {
   }
 
   onSubmit(): void{
-    this.caseModel.user = this.clientId;
     this.caseService.createCase(this.caseModel).subscribe(
       (c: Case) => {
         this.router.navigate(['/case/' + c.id]);
@@ -58,7 +55,6 @@ export class CaseAddComponent implements OnInit {
     } else {
       this.statusHasError = false;
     }
-    console.log(this.statusHasError)
   }
 
 }

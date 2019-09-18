@@ -13,10 +13,10 @@ import com.app.aza.model.STATUS;
 import com.app.aza.model.User;
 import com.app.aza.repository.CaseRepository;
 import com.app.aza.repository.UserRepository;
-import com.app.aza.service.ICaseService;
+import com.app.aza.service.CaseService;
 
 @Service
-public class CaseService implements ICaseService {
+public class CaseServiceImpl implements CaseService {
 
 	@Autowired
 	private CaseRepository caseRepository;
@@ -29,9 +29,7 @@ public class CaseService implements ICaseService {
 	
 	public Collection<CaseDTO> clientCases(Long id){
 		return caseRepository.clientCases(id).stream()
-				.map(c -> {
-					return new CaseDTO(c);
-				})
+				.map(c ->  new CaseDTO(c))
 				.collect(Collectors.toList());
 	}
 	
@@ -58,8 +56,8 @@ public class CaseService implements ICaseService {
 	}
 	
 	public Collection<String> allStatus(){
-		return Arrays.asList(STATUS.values()).stream().map(s-> {
-			return STATUS.fromEnum(s);
-		}).collect(Collectors.toList());
+		return Arrays.asList(STATUS.values()).stream()
+				.map(s-> STATUS.fromEnum(s))
+				.collect(Collectors.toList());
 	}
 }
