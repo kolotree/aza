@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/model/user';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EventChannels } from 'src/app/model/eventChannels';
+import { EmitterService } from 'src/app/services/emitter.service';
 
 @Component({
   selector: 'app-client-details',
@@ -11,20 +13,21 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ClientDetailsComponent implements OnInit {
 
-  pageTitle: string = 'Klijent'
+  pageTitle = 'Klijent';
   client: User = new User();
 
   constructor(private route: ActivatedRoute,
-    private userService: UserService) { }
+              private userService: UserService,
+              private router: Router) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.userService.getUser(id).subscribe(
-        (user: User)=> {
+        (user: User) => {
           this.client = user;
-        }, (err: HttpErrorResponse) => {
-          console.log(err)
+        }, (error: HttpErrorResponse) => {
+          this.router.navigate(['/errorpage404']);
       });
     }
   }

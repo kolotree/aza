@@ -13,16 +13,16 @@ import { User } from 'src/app/model/user';
 })
 export class CaseAddComponent implements OnInit {
 
-  pageTitle: string = 'Dodavanje predmeta';
+  pageTitle = 'Dodavanje predmeta';
   caseModel: Case = new Case();
   errorMessage: string;
-  statusHasError: boolean = true;
+  statusHasError = true;
   caseStatus: string[] = [];
 
   constructor(private caseService: CaseService,
-    private userService: UserService,
-    private router: Router,
-    private route: ActivatedRoute) { }
+              private userService: UserService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -31,7 +31,7 @@ export class CaseAddComponent implements OnInit {
         (user: User) => {
           this.caseModel.user = user;
         }, (err: HttpErrorResponse) => {
-          console.log(err)
+          console.log(err);
         });
       this.caseService.getStatus().subscribe(
         (status: string[]) => {
@@ -40,20 +40,20 @@ export class CaseAddComponent implements OnInit {
     }
   }
 
-  onSubmit(): void{
+  onSubmit(): void {
     this.caseService.createCase(this.caseModel).subscribe(
       (c: Case) => {
         this.router.navigate(['/case/' + c.id]);
       }, (err: HttpErrorResponse) => {
-        console.log(err)
+        console.log(err);
       });
   }
 
-  validateStatus(value: string) {
-    if (value === "") {
-      this.statusHasError = true;
-    } else {
+  validateStatus(value: string): void {
+    if (this.caseStatus.includes(value)) {
       this.statusHasError = false;
+    } else {
+      this.statusHasError = true;
     }
   }
 

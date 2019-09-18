@@ -11,12 +11,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ClientsListComponent implements OnInit {
 
-  pageTitle: string = 'Klijenti';
+  pageTitle = 'Klijenti';
   users: User[] = [];
   usersSearch: User[] = [];
-  searchName: string = '';
-  searchSurname: string = '';
-  errorMessage: string = '';
+  searchName = '';
+  searchSurname = '';
+  errorMessage = '';
 
   constructor(
     private userService: UserService,
@@ -28,16 +28,15 @@ export class ClientsListComponent implements OnInit {
         this.users = users;
         this.usersSearch = users;
       }, (err: HttpErrorResponse) => {
-        console.log(err)
+        console.log(err);
       });
   }
 
-  searchUsers(): void{
+  searchUsers(): void {
     this.usersSearch = this.users.filter((user: User) =>
       user.name.toLocaleLowerCase().indexOf(this.searchName.toLocaleLowerCase()) !== -1
       && user.surname.toLocaleLowerCase().indexOf(this.searchSurname.toLocaleLowerCase()) !== -1);
   }
-  
   details(id: string): void {
     this.router.navigate(['/client/' + id]);
   }

@@ -1,53 +1,34 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { Case } from '../model/case';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { BaseService } from './base.service';
+
 
 @Injectable({
     providedIn: 'root'
 })
-export class CaseService extends BaseService {
+export class CaseService {
 
-    constructor(private http: HttpClient) { 
-        super();
-    }
-    
-    getCase(id: string): Observable<Case | undefined>{
-        return this.http.get<Case>(environment.apiUrl + "case/" + id)
-            .pipe(
-                catchError(super.handleError)
-            );
+    constructor(private http: HttpClient) { }
+
+    getCase(id: string): Observable<Case | undefined> {
+        return this.http.get<Case>(environment.apiUrl + 'case/' + id);
     }
 
-    getCasesUser(id: string): Observable<Case[]>{
-        return this.http.get<Case[]>(environment.apiUrl + "client/case/" + id)
-            .pipe(
-                catchError(super.handleError)
-            );
+    getCasesUser(id: string): Observable<Case[]> {
+        return this.http.get<Case[]>(environment.apiUrl + 'client/case/' + id);
     }
 
     createCase(c: Case): Observable<Case | undefined> {
-        return this.http.post<Case>(environment.apiUrl + "case", c)
-            .pipe(
-                catchError(super.handleError)
-            );
+        return this.http.post<Case>(environment.apiUrl + 'case', c);
     }
 
     updateCaseStatus(c: Case): Observable<Case | undefined> {
-        return this.http.put<Case>(environment.apiUrl + "case", c)
-            .pipe(
-                catchError(super.handleError)
-            );
-    }
-    
-    getStatus(): Observable<string[]> {
-        return this.http.get<string[]>(environment.apiUrl + "status")
-            .pipe(
-                catchError(super.handleError)
-            );
+        return this.http.put<Case>(environment.apiUrl + 'case', c);
     }
 
+    getStatus(): Observable<string[]> {
+        return this.http.get<string[]>(environment.apiUrl + 'status');
+    }
 }

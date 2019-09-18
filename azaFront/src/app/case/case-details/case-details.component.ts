@@ -14,12 +14,11 @@ import { tap, finalize } from 'rxjs/operators';
 })
 export class CaseDetailsComponent implements OnInit {
 
-  pageTitle: string = 'Predmet';
+  pageTitle = 'Predmet';
   case: Case = new Case();
-  errorMessage: string = '';
-  statusButton: string = 'Izmeni status';
-  changeStatus: boolean = false;
-  caseStatus: string[] = []
+  statusButton = 'Izmeni status';
+  changeStatus = false;
+  caseStatus: string[] = [];
 
   fileName: string;
   file: File;
@@ -30,8 +29,8 @@ export class CaseDetailsComponent implements OnInit {
   downloadURL: Observable<string>;
 
   constructor(private route: ActivatedRoute,
-    private caseService: CaseService,
-    private afStorage: AngularFireStorage) { }
+              private caseService: CaseService,
+              private afStorage: AngularFireStorage) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -40,7 +39,7 @@ export class CaseDetailsComponent implements OnInit {
         (c: Case) => {
           this.case = c;
         }, (err: HttpErrorResponse) => {
-          console.log(err)
+          console.log(err);
         });
       this.caseService.getStatus().subscribe(
         (status: string[]) => {
@@ -49,30 +48,30 @@ export class CaseDetailsComponent implements OnInit {
     }
   }
 
-  statusAction(): void{
+  statusAction(): void {
     if (this.changeStatus === false) {
       this.statusButton = 'Izmeni';
       this.changeStatus = true;
     } else {
-      this.caseService.updateCaseStatus(this.case).subscribe({
-        next: c => {
+      this.caseService.updateCaseStatus(this.case).subscribe(
+        (c: Case) => {
           this.case = c;
-        },
-        error: err => this.errorMessage = err
+        }, (err: HttpErrorResponse) => {
+          console.log(err);
       });
       this.statusButton = 'Izmeni status';
       this.changeStatus = false;
     }
   }
 
-  setFile(event): void{
+  setFile(event): void {
     if (event.target.files.length > 0) {
       this.fileName = event.target.files[0].name;
       this.file = event.target.files[0];
     }
   }
 
-  upload():void {
+  upload(): void {
     const path = `test/${Date.now()}${this.fileName}`;
     const task = this.afStorage.upload(path, this.file);
     const ref = this.afStorage.ref(path);

@@ -7,15 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  pageTitle: string = 'Prijavljivanje';
-  password: string = ''
+  pageTitle = 'Prijavljivanje';
+  password = '';
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  onSubmit(): void{
-    
-  }
+  onSubmit(): void { }
 }

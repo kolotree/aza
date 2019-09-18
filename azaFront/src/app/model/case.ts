@@ -1,6 +1,6 @@
 import { User } from './user';
 
-export class Case{
+export class Case {
     public id: string;
     public user: User;
     public name: string;
@@ -11,8 +11,4 @@ export class Case{
     constructor() {
         this.user = new User();
     }
-}
-
-export class Status {
-    public name: string;
 }

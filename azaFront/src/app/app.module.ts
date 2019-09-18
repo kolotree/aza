@@ -17,6 +17,7 @@ import { CaseAddComponent } from './case/case-add/case-add.component';
 import { CaseListComponent } from './case/case-list/case-list.component';
 import { LoginComponent } from './login/login.component';
 import { from } from 'rxjs';
+import { Errorpage404Component } from './errorpage404/errorpage404.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { from } from 'rxjs';
     CaseDetailsComponent,
     CaseAddComponent,
     CaseListComponent,
-    LoginComponent
+    LoginComponent,
+    Errorpage404Component
   ],
   imports: [
     BrowserModule,
@@ -37,10 +39,10 @@ import { from } from 'rxjs';
     FormsModule,
     HttpClientModule,
     AngularFireModule.initializeApp({
-      apiKey: "AIzaSyCnS8HgceeX9tYre5KYDTzD3JxewlGFhAs",
-      authDomain: "apza-9710f.firebaseapp.com",
-      projectId: "apza-9710f",
-      storageBucket: "apza-9710f.appspot.com",
+      apiKey: 'AIzaSyCnS8HgceeX9tYre5KYDTzD3JxewlGFhAs',
+      authDomain: 'apza-9710f.firebaseapp.com',
+      projectId: 'apza-9710f',
+      storageBucket: 'apza-9710f.appspot.com',
     }),
     AngularFireStorageModule
   ],

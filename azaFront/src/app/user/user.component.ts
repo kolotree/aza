@@ -10,14 +10,13 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
-  
-  pageTitle: string = 'Moji predmeti';
+
+  pageTitle = 'Moji predmeti';
   cases: Case[] = [];
   casesSearch: Case[] = [];
-  errorMessage: string = '';
-  searchName: string = '';
-  searchDate: string = '';
-  
+  searchName = '';
+  searchDate = '';
+
   constructor(
     private caseService: CaseService,
     private route: ActivatedRoute) { }
@@ -30,12 +29,12 @@ export class UserComponent implements OnInit {
           this.cases = cases;
           this.casesSearch = cases;
         }, (err: HttpErrorResponse) => {
-          console.log(err)
+          console.log(err);
       });
     }
   }
 
-  searchCases(): void{
+  searchCases(): void {
     this.casesSearch = this.cases.filter((c: Case) =>
       c.name.toLocaleLowerCase().indexOf(this.searchName.toLocaleLowerCase()) !== -1
       && c.date.indexOf(this.searchDate) !== -1);

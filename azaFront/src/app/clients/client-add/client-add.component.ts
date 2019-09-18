@@ -11,23 +11,19 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ClientAddComponent implements OnInit {
 
-  pageTitle: string = 'Dodavanje klijenta';
+  pageTitle = 'Dodavanje klijenta';
   userModel: User = new User();
-  errorMessage: string = '';
 
-  constructor(
-    private userService: UserService,
-    private router: Router) { }
+  constructor(private userService: UserService,
+              private router: Router) { }
 
-  ngOnInit() {
-  }
-  
+  ngOnInit() { }
   onSubmit(): void {
     this.userService.createUser(this.userModel).subscribe(
       (user: User) => {
         this.router.navigate(['/client/' + user.id]);
       }, (err: HttpErrorResponse) => {
-        console.log(err)
+        console.log(err);
       });
   }
 
