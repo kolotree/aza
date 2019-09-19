@@ -29,7 +29,7 @@
                     <td>{{case.status}}</td>
                     <td>
                         <ul>
-                            <li *ngFor='let doc of case.documents'>{{doc}}</li>
+                            <li *ngFor='let doc of case.documents'><a [href]="doc.reference">{{doc.name}}</a></li>
                         </ul>
                     </td>
                 </tr>

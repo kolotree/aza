@@ -48,7 +48,7 @@
             </span>
         </label>
         <input type="text" class="form-control" readonly [(ngModel)]='fileName'>
-        <label class="input-group-btn" *ngIf="fileName!=null">
+        <label class="input-group-btn" *ngIf="canUpload">
             <span class="btn btn-outline-secondary btn-sm"> 
                 Otpremi<input type="submit" style="display: none;" (click)='upload()'>
             </span>
@@ -59,11 +59,7 @@
         </div>
     </div>
     <br>
-    <div *ngIf="downloadURL | async; let downloadSrc" class="alert alert-info" role="alert">
-        fajl: <a [href]="downloadSrc">{{downloadSrc}}</a>
-
-    </div>
     <ol>
-        <li *ngFor="let doc of case.documents">{{doc}}</li>
+        <li *ngFor="let doc of case.documents"><a [href]="doc.reference">{{doc.name}}</a></li>
     </ol>
 </div>

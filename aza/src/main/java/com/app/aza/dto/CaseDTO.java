@@ -2,6 +2,7 @@ package com.app.aza.dto;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.app.aza.model.Case;
 import com.app.aza.model.STATUS;
@@ -13,9 +14,9 @@ public class CaseDTO {
 	private String name;
 	private String date;
 	private String status;
-	private Set<String> documents;
+	private Set<DocumentDTO> documents;
 	
-	public CaseDTO(Long id, UserDTO user, String name, String date, String status, Set<String> documents) {
+	public CaseDTO(Long id, UserDTO user, String name, String date, String status, Set<DocumentDTO> documents) {
 		super();
 		this.id = id;
 		this.user = user;
@@ -32,7 +33,7 @@ public class CaseDTO {
 		this.name = c.getName();
 		this.date = c.getDate();
 		this.status = STATUS.fromEnum(c.getStatus());
-		this.documents = new HashSet<>();
+		this.documents = c.getDocuments().stream().map(document-> new DocumentDTO(document)).collect(Collectors.toSet());
 	}
 
 	public CaseDTO() {
@@ -80,11 +81,11 @@ public class CaseDTO {
 		this.status = status;
 	}
 
-	public Set<String> getDocuments() {
+	public Set<DocumentDTO> getDocuments() {
 		return documents;
 	}
 
-	public void setDocuments(Set<String> documents) {
+	public void setDocuments(Set<DocumentDTO> documents) {
 		this.documents = documents;
 	}
 	

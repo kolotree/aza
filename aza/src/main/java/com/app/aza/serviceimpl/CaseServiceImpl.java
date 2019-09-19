@@ -7,11 +7,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.app.aza.dto.CaseDTO;
 import com.app.aza.model.Case;
 import com.app.aza.model.STATUS;
-import com.app.aza.model.User;
 import com.app.aza.repository.CaseRepository;
+import com.app.aza.repository.DocumentRepository;
 import com.app.aza.repository.UserRepository;
 import com.app.aza.service.CaseService;
 
@@ -22,37 +21,39 @@ public class CaseServiceImpl implements CaseService {
 	private CaseRepository caseRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private DocumentRepository documentRepository;
 	
-	public CaseDTO findOne(Long id) throws CaseNotFoundException {
-		return new CaseDTO(caseRepository.findById(id).orElseThrow(() -> new CaseNotFoundException(id.toString())));
+	public Case findOne(Long id) throws CaseNotFoundException {
+		Case c = caseRepository.findById(id).orElseThrow(() -> new CaseNotFoundException(id.toString()));
+		c.setDocuments(documentRepository.findByCaseId(id));
+		return c;
 	}
 	
-	public Collection<CaseDTO> clientCases(Long id){
+	public Collection<Case> clientCases(Long id){
 		return caseRepository.clientCases(id).stream()
-				.map(c ->  new CaseDTO(c))
-				.collect(Collectors.toList());
+				.map(c-> {
+					c.setDocuments(documentRepository.findByCaseId(c.getId())); 
+					return c;
+					}
+				).collect(Collectors.toList());
 	}
 	
-	public CaseDTO createOrUpdate(CaseDTO caseDTO) throws UserNotFoundException, CaseNotFoundException {
-		Case c;
-		if(caseDTO.getId() == null) {
-			User user = userRepository.findById(new Long(caseDTO.getUser().getId()))
-					.orElseThrow(() -> new UserNotFoundException(caseDTO.getUser().getId().toString()));
-			c = new Case(caseDTO);
-			c.setUser(user);
-		}else {
-			c = caseRepository.findById(caseDTO.getId()).orElseThrow(() -> new CaseNotFoundException(caseDTO.getId().toString()));
-			c.setDate(caseDTO.getDate());
-			c.setName(caseDTO.getName());
-			c.setStatus(STATUS.fromString(caseDTO.getStatus()));
+	public Case createOrUpdate(Case c) throws UserNotFoundException, CaseNotFoundException {
+		if(c.getId() == null) {
+			c.setUser(userRepository.findById(new Long(c.getUser().getId()))
+					.orElseThrow(() -> new UserNotFoundException(c.getUser().getId().toString())));
+			return caseRepository.save(c);
 		}
-		return new CaseDTO(caseRepository.save(c));
+		Case caseUpdate = caseRepository.findById(c.getId()).orElseThrow(() -> new CaseNotFoundException(c.getId().toString()));
+		caseUpdate.update(c);
+		return caseRepository.save(caseUpdate);
 	}
 	
-	public CaseDTO updateStatus(CaseDTO caseDTO) throws CaseNotFoundException {
-		Case c = caseRepository.findById(caseDTO.getId()).orElseThrow(() -> new CaseNotFoundException(caseDTO.getId().toString()));
-		c.setStatus(STATUS.fromString(caseDTO.getStatus()));
-		return new CaseDTO(caseRepository.save(c));
+	public Case updateStatus(Case c) throws CaseNotFoundException {
+		Case caseUpdate = caseRepository.findById(c.getId()).orElseThrow(() -> new CaseNotFoundException(c.getId().toString()));
+		caseUpdate.setStatus(c.getStatus());
+		return caseRepository.save(caseUpdate);
 	}
 	
 	public Collection<String> allStatus(){

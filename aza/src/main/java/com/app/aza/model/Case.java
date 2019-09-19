@@ -59,6 +59,7 @@ public class Case {
 		this.id = c.getId();
 		this.name = c.getName();
 		this.date = c.getDate();
+		this.user = new User(c.getUser());
 		this.status = STATUS.fromString(c.getStatus());
 	}
 	public Case() {
@@ -111,6 +112,13 @@ public class Case {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public void update(Case c) {
+		this.date = c.getDate();
+		this.name = c.getName();
+		this.status = c.getStatus();
+		
 	}
 	
 }

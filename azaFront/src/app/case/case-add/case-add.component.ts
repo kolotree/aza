@@ -5,6 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from 'src/app/model/user';
+import { EmitterService } from 'src/app/services/emitter.service';
+import { EventChannels } from 'src/app/model/eventChannels';
 
 @Component({
   selector: 'app-case-add',
@@ -30,8 +32,8 @@ export class CaseAddComponent implements OnInit {
       this.userService.getUser(id).subscribe(
         (user: User) => {
           this.caseModel.user = user;
-        }, (err: HttpErrorResponse) => {
-          console.log(err);
+        }, (error: HttpErrorResponse) => {
+          EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
         });
       this.caseService.getStatus().subscribe(
         (status: string[]) => {
@@ -44,8 +46,8 @@ export class CaseAddComponent implements OnInit {
     this.caseService.createCase(this.caseModel).subscribe(
       (c: Case) => {
         this.router.navigate(['/case/' + c.id]);
-      }, (err: HttpErrorResponse) => {
-        console.log(err);
+      }, (error: HttpErrorResponse) => {
+        EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
       });
   }
 

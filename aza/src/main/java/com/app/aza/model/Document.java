@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.app.aza.dto.DocumentDTO;
+
 @Entity
 @Table(name="document")
 public class Document {
@@ -34,6 +36,15 @@ public class Document {
 		this.name = name;
 		this.reference = reference;
 		this.c = c;
+	}
+	
+	public Document(DocumentDTO document) {
+		super();
+		this.id = document.getId();
+		this.name = document.getName();
+		this.reference = document.getReference();
+		this.c = new Case();
+		c.setId(document.getCaseId());
 	}
 
 	public Document() {
@@ -64,11 +75,11 @@ public class Document {
 		this.reference = reference;
 	}
 
-	public Case getC() {
+	public Case getCase() {
 		return c;
 	}
 
-	public void setC(Case c) {
+	public void setCase(Case c) {
 		this.c = c;
 	}
 	

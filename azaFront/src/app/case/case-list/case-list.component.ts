@@ -3,6 +3,8 @@ import { Case } from 'src/app/model/case';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CaseService } from 'src/app/services/case.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EmitterService } from 'src/app/services/emitter.service';
+import { EventChannels } from 'src/app/model/eventChannels';
 
 @Component({
   selector: 'app-case-list',
@@ -31,8 +33,8 @@ export class CaseListComponent implements OnInit {
           (cases: Case[]) => {
            this.cases = cases;
            this.casesSearch = cases;
-         }, (err: HttpErrorResponse) => {
-          console.log(err);
+         }, (error: HttpErrorResponse) => {
+          EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
       });
       this.caseService.getStatus().subscribe(
         (status: string[]) => {

@@ -1,6 +1,7 @@
 package com.app.aza.controller;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.aza.dto.UserDTO;
+import com.app.aza.model.User;
 import com.app.aza.serviceimpl.UserNotFoundException;
 import com.app.aza.serviceimpl.UserServiceImpl;
 
@@ -30,8 +32,9 @@ public class UserController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<UserDTO>> getUsers(){
-		Collection<UserDTO> users = userService.findAll();
-		return new ResponseEntity<>(users, HttpStatus.OK);
+		return new ResponseEntity<>(userService.findAll().stream()
+									.map(u -> new UserDTO(u))
+									.collect(Collectors.toList()), HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -39,13 +42,11 @@ public class UserController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getUser(@PathVariable("id") Long id){
-		UserDTO user = null;
 		try {
-			user = userService.findOne(id);
+			return new ResponseEntity<>(new UserDTO(userService.findOne(id)), HttpStatus.OK);
 		} catch (UserNotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -54,13 +55,11 @@ public class UserController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createUser(@RequestBody UserDTO user){
-		UserDTO crUser;
 		try {
-			crUser = userService.createOrUpdate(user);
+			return new ResponseEntity<>(new UserDTO(userService.createOrUpdate(new User(user))), HttpStatus.OK);
 		} catch (UserNotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(crUser, HttpStatus.OK);
 	}
 	
 	

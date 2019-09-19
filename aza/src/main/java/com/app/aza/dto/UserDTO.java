@@ -32,7 +32,6 @@ public class UserDTO {
 		this.name = user.getName();
 		this.surname = user.getSurname();
 		this.email = user.getEmail();
-		this.password = user.getPassword();
 		this.role = ROLE.fromEnum(user.getRole());
 	}
 

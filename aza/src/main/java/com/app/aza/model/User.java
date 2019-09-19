@@ -61,6 +61,7 @@ public class User {
 		this.name = user.getName();
 		this.surname = user.getSurname();
 		this.email = user.getEmail();
+		this.password = user.getPassword();
 		this.role = ROLE.fromString(user.getRole());
 		this.cases = new HashSet<>();
 	}
@@ -124,6 +125,12 @@ public class User {
 
 	public void setCases(Set<Case> cases) {
 		this.cases = cases;
+	}
+
+	public void update(User user) {
+		this.name = user.getName();
+		this.surname = user.getSurname();
+		this.email = user.getEmail();
 	}
 	
 }

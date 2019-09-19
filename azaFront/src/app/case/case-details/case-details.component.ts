@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Case } from 'src/app/model/case';
 import { ActivatedRoute } from '@angular/router';
 import { CaseService } from 'src/app/services/case.service';
+import { Document } from 'src/app/model/document';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { tap, finalize } from 'rxjs/operators';
+import { DocumentService } from 'src/app/services/document.service';
 
 @Component({
   selector: 'app-case-details',
@@ -22,15 +24,16 @@ export class CaseDetailsComponent implements OnInit {
 
   fileName: string;
   file: File;
+  canUpload = false;
 
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
   uploadProgress: Observable<number>;
-  downloadURL: Observable<string>;
 
   constructor(private route: ActivatedRoute,
               private caseService: CaseService,
-              private afStorage: AngularFireStorage) { }
+              private afStorage: AngularFireStorage,
+              private documentService: DocumentService) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -68,19 +71,30 @@ export class CaseDetailsComponent implements OnInit {
     if (event.target.files.length > 0) {
       this.fileName = event.target.files[0].name;
       this.file = event.target.files[0];
+      this.canUpload = true;
     }
   }
 
   upload(): void {
-    const path = `test/${Date.now()}${this.fileName}`;
+    this.canUpload = false;
+    const path = `${this.case.user.id}/${Date.now()}_${this.fileName}`;
     const task = this.afStorage.upload(path, this.file);
     const ref = this.afStorage.ref(path);
     this.uploadProgress = task.percentageChanges();
     task.snapshotChanges().pipe(
       finalize(() => {
-        this.downloadURL = ref.getDownloadURL();
+        ref.getDownloadURL().subscribe(value => {
+          const document: Document = { id: null, name: this.fileName, reference: value, caseId: this.case.id };
+          this.documentService.createDocument(document).subscribe(
+            (doc: Document) => {
+              this.case.documents.push(doc);
+            }
+          );
+          this.fileName = null;
+          this.file = null;
+          this.uploadProgress = null;
+        });
       })
-    )
-      .subscribe();
+    ).subscribe();
   }
 }

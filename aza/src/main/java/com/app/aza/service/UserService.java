@@ -2,11 +2,11 @@ package com.app.aza.service;
 
 import java.util.Collection;
 
-import com.app.aza.dto.UserDTO;
+import com.app.aza.model.User;
 import com.app.aza.serviceimpl.UserNotFoundException;
 
 public interface UserService {
-	Collection<UserDTO> findAll();
-	UserDTO createOrUpdate(UserDTO userDTO) throws UserNotFoundException;
-	UserDTO findOne(Long id) throws UserNotFoundException;
+	Collection<User> findAll();
+	User createOrUpdate(User user) throws UserNotFoundException;
+	User findOne(Long id) throws UserNotFoundException;
 }

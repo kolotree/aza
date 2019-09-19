@@ -3,6 +3,8 @@ import { Case } from '../model/case';
 import { CaseService } from '../services/case.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EmitterService } from '../services/emitter.service';
+import { EventChannels } from '../model/eventChannels';
 
 @Component({
   selector: 'app-user',
@@ -28,8 +30,8 @@ export class UserComponent implements OnInit {
         (cases: Case[]) => {
           this.cases = cases;
           this.casesSearch = cases;
-        }, (err: HttpErrorResponse) => {
-          console.log(err);
+        }, (error: HttpErrorResponse) => {
+          EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
       });
     }
   }

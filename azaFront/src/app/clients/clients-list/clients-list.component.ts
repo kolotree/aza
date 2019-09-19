@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EmitterService } from 'src/app/services/emitter.service';
+import { EventChannels } from 'src/app/model/eventChannels';
 
 @Component({
   selector: 'app-clients-list',
@@ -27,8 +29,8 @@ export class ClientsListComponent implements OnInit {
       (users: User[]) => {
         this.users = users;
         this.usersSearch = users;
-      }, (err: HttpErrorResponse) => {
-        console.log(err);
+      }, (error: HttpErrorResponse) => {
+        EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
       });
   }
 
