@@ -16,8 +16,8 @@ import { CaseDetailsComponent } from './case/case-details/case-details.component
 import { CaseAddComponent } from './case/case-add/case-add.component';
 import { CaseListComponent } from './case/case-list/case-list.component';
 import { LoginComponent } from './login/login.component';
-import { from } from 'rxjs';
-import { Errorpage404Component } from './errorpage404/errorpage404.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
@@ -31,7 +31,8 @@ import { Errorpage404Component } from './errorpage404/errorpage404.component';
     CaseAddComponent,
     CaseListComponent,
     LoginComponent,
-    Errorpage404Component
+    PageNotFoundComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

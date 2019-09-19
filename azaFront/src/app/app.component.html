@@ -1,13 +1,8 @@
-<nav class='navbar navbar-expand-sm bg-primary navbar-dark'>
-  <a class='navbar-brand text-secondary'>{{pageTitle}}</a>
-  <ul class='navbar-nav'>
-    <li class='nav-item'><a class='nav-link' [routerLink]="['/client']">Klijenti</a></li>
-    <li class='nav-item'><a class='nav-link' [routerLink]="['/addClient']">Dodaj klijenta</a></li>
-    <li class='nav-item'><a class='nav-link' [routerLink]="['/user/2']">Korisnik</a></li>
-  </ul>
-</nav>
-<div class='bg-secondary full-height'>
+<app-header  (messageEvent)='showErrorMessage=$event' [showErrorMessage]="showErrorMessage"></app-header>
+<div class='bg-secondary full-height' *ngIf='showErrorMessage'>
   <div class="container bg-white w-75 full-height">
-    <router-outlet></router-outlet>
+    <h1 class="text-center">Greška!</h1>
+    <h3>{{message}}</h3>
+    <button class="btn btn-outline-secondary" (click)='back()'>&lt; Nazad</button>
   </div>
 </div>

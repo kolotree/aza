@@ -27,7 +27,7 @@ export class ClientDetailsComponent implements OnInit {
         (user: User) => {
           this.client = user;
         }, (error: HttpErrorResponse) => {
-          this.router.navigate(['/errorpage404']);
+          EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
       });
     }
   }

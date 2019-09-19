@@ -8,7 +8,7 @@ import { ClientAddComponent } from './clients/client-add/client-add.component';
 import { CaseAddComponent } from './case/case-add/case-add.component';
 import { UserComponent } from './user/user.component';
 import { LoginComponent } from './login/login.component';
-import { Errorpage404Component } from './errorpage404/errorpage404.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 const routes: Routes = [
@@ -20,9 +20,8 @@ const routes: Routes = [
   { path: 'addClient', component: ClientAddComponent },
   { path: 'addCase/:id', component: CaseAddComponent},
   { path: 'user/:id', component: UserComponent},
-  { path: 'errorpage404', component: Errorpage404Component},
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login', pathMatch: 'full' }
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
