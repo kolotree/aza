@@ -3,5 +3,4 @@ export class Document {
     public name: string;
     public reference: string;
     public caseId: string;
-
 }

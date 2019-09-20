@@ -1,6 +1,7 @@
 package com.app.aza.controller;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,15 @@ public class UserController {
 		}
 	}
 	
+	@RequestMapping(
+			value = "/user/search",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<UserDTO>> getUsersSearch(@RequestBody HashMap<String, String> search){
+			return new ResponseEntity<>(userService.userSearch(search).stream()
+										.map(u ->  new UserDTO(u))
+										.collect(Collectors.toList()), HttpStatus.OK);
+	}
 	
 }

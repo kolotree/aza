@@ -31,4 +31,8 @@ export class CaseService {
     getStatus(): Observable<string[]> {
         return this.http.get<string[]>(environment.apiUrl + 'status');
     }
+
+    searchCasesClient(search: any) {
+        return this.http.post<Case[]>(environment.apiUrl + 'client/case/search', search);
+    }
 }

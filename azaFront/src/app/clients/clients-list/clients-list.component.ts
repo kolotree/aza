@@ -15,7 +15,6 @@ export class ClientsListComponent implements OnInit {
 
   pageTitle = 'Klijenti';
   users: User[] = [];
-  usersSearch: User[] = [];
   searchName = '';
   searchSurname = '';
   errorMessage = '';
@@ -28,16 +27,20 @@ export class ClientsListComponent implements OnInit {
     this.userService.getUsers().subscribe(
       (users: User[]) => {
         this.users = users;
-        this.usersSearch = users;
       }, (error: HttpErrorResponse) => {
         EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
       });
   }
 
   searchUsers(): void {
-    this.usersSearch = this.users.filter((user: User) =>
-      user.name.toLocaleLowerCase().indexOf(this.searchName.toLocaleLowerCase()) !== -1
-      && user.surname.toLocaleLowerCase().indexOf(this.searchSurname.toLocaleLowerCase()) !== -1);
+    const search = { name: this.searchName, surname: this.searchSurname };
+    this.userService.searchUsers(search).subscribe(
+      (users: User[]) => {
+        this.users = users;
+      }, (error: HttpErrorResponse) => {
+        EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
+      }
+    );
   }
   details(id: string): void {
     this.router.navigate(['/client/' + id]);

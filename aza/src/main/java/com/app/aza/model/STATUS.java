@@ -8,8 +8,10 @@ public enum STATUS {
 			return STATUS.IN_PROCESS;
 		}else if(status.equals("Prihvaćen")){
 			return STATUS.ACCEPTED;
-		}else {
+		}else if(status.equals("Odbijen")){
 			return STATUS.REJECTED;
+		}else {
+			return null;
 		}
 	}
 	

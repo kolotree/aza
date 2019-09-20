@@ -14,8 +14,8 @@ import { EventChannels } from 'src/app/model/eventChannels';
 export class CaseListComponent implements OnInit {
 
   pageTitle = 'Predmeti';
+  id: string;
   cases: Case[] = [];
-  casesSearch: Case[] = [];
   caseStatus: string[] = [];
   searchName = '';
   searchStatus = '';
@@ -27,12 +27,11 @@ export class CaseListComponent implements OnInit {
               private caseService: CaseService) { }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.caseService.getCasesUser(id).subscribe(
+    this.id = this.route.snapshot.paramMap.get('id');
+    if (this.id) {
+      this.caseService.getCasesUser(this.id).subscribe(
           (cases: Case[]) => {
            this.cases = cases;
-           this.casesSearch = cases;
          }, (error: HttpErrorResponse) => {
           EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
       });
@@ -45,10 +44,14 @@ export class CaseListComponent implements OnInit {
   }
 
   searchCases(): void {
-    this.casesSearch = this.cases.filter((c: Case) =>
-      c.name.toLocaleLowerCase().indexOf(this.searchName.toLocaleLowerCase()) !== -1
-      && c.status.toLocaleLowerCase().indexOf(this.searchStatus.toLocaleLowerCase()) !== -1
-      && c.date.indexOf(this.searchDate) !== -1);
+    const search = { id: this.id, name: this.searchName, status: this.searchStatus, date: this.searchDate };
+    this.caseService.searchCasesClient(search).subscribe(
+      (cases: Case[]) => {
+        this.cases = cases;
+      }, (error: HttpErrorResponse) => {
+        EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
+      }
+    );
   }
 
   details(id: string): void {

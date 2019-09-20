@@ -1,6 +1,7 @@
 package com.app.aza.service;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 import com.app.aza.model.Case;
 import com.app.aza.serviceimpl.CaseNotFoundException;
@@ -12,4 +13,5 @@ public interface CaseService {
 	Case createOrUpdate(Case c) throws UserNotFoundException, CaseNotFoundException;
 	Case updateStatus(Case c) throws CaseNotFoundException;
 	Collection<String> allStatus();
+	Collection<Case> clientCasesSearch(HashMap<String, String> search);
 }

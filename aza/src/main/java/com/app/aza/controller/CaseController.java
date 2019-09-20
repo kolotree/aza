@@ -1,6 +1,7 @@
 package com.app.aza.controller;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,5 +82,16 @@ public class CaseController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<String>> getStatus(){
 			return new ResponseEntity<>(caseService.allStatus(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(
+			value = "/client/case/search",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Collection<CaseDTO>> getClietnCasesSearch(@RequestBody HashMap<String, String> search){
+			return new ResponseEntity<>(caseService.clientCasesSearch(search).stream()
+										.map(c ->  new CaseDTO(c))
+										.collect(Collectors.toList()), HttpStatus.OK);
 	}
 }

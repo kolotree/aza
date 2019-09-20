@@ -22,7 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let user of usersSearch">
+                <tr *ngFor="let user of users">
                     <td>{{user.name}}</td>
                     <td>{{user.surname}}</td>
                     <td><button type="button" class="btn btn-outline-secondary btn-sm btn-block" (click)='details(user.id)'>Detalji</button></td>

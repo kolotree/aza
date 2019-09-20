@@ -2,6 +2,7 @@ package com.app.aza.serviceimpl;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,4 +62,20 @@ public class CaseServiceImpl implements CaseService {
 				.map(s-> STATUS.fromEnum(s))
 				.collect(Collectors.toList());
 	}
+
+	public Collection<Case> clientCasesSearch(HashMap<String, String> search) {
+		try {
+			return caseRepository.clientCasesSearch(new Long(search.get("id")), search.get("name"),
+					STATUS.fromString(search.get("status")), search.get("date")).stream()
+					.map(c-> {
+							c.setDocuments(documentRepository.findByCaseId(c.getId())); 
+							return c;
+						}
+					)
+					.collect(Collectors.toList());	
+		}catch (Exception e) {
+			throw e;
+		}
+	}
+
 }

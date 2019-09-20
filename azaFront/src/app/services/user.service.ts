@@ -22,4 +22,8 @@ export class UserService {
     createUser(user: User): Observable<User | undefined> {
         return this.http.post<User>(environment.apiUrl + 'user', user);
     }
+
+    searchUsers(search: any) {
+        return this.http.post<User[]>(environment.apiUrl + '/user/search', search);
+  }
 }

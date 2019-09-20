@@ -1,7 +1,7 @@
 package com.app.aza.serviceimpl;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +18,7 @@ public class UserServiceImpl implements UserService{
 	private UserRepository userRepository;
 	
 	public Collection<User> findAll(){
-		return userRepository.findAll().stream()
-				.filter(u-> u.getRole().equals(ROLE.USER))
-				.collect(Collectors.toList());
+		return userRepository.getUsers(ROLE.USER);
 	}
 	
 	public User createOrUpdate(User user) throws UserNotFoundException {
@@ -35,5 +33,13 @@ public class UserServiceImpl implements UserService{
 	
 	public User findOne(Long id) throws UserNotFoundException {
 		return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id.toString()));
+	}
+
+	public Collection<User> userSearch(HashMap<String, String> search) {
+		try {
+			return userRepository.userSearch(search.get("name"), search.get("surname"), ROLE.USER);
+		}catch (Exception e) {
+			throw e;
+		}
 	}
 }
