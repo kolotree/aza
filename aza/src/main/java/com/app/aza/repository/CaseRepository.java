@@ -17,7 +17,7 @@ public interface CaseRepository extends JpaRepository<Case, Long> {
 	Set<Case> clientCases(Long id);
 
 	@Query("select c from Case c left join User u on c.user = u.id where u.id = ?1 "
-			+ "and c.name like concat('%',?2,'%') and (?3 is null or ?3 = c.status) "
+			+ "and c.name like concat('%',?2,'%') and (c.status=?3 or ?3=null) "
 			+ "and c.date like concat('%',?4,'%')")
 	Collection<Case> clientCasesSearch(Long id, String name, STATUS status, String date);
 }
