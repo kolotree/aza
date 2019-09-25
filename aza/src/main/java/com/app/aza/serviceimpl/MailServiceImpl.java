@@ -6,6 +6,7 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.app.aza.model.Case;
@@ -20,6 +21,7 @@ public class MailServiceImpl implements MailService {
 	@Autowired
 	private JavaMailSender mailSender;
 	
+	@Async
 	public void newUser (User user) throws MessagingException {
 		MimeMessage mimeMessage= mailSender.createMimeMessage();
 		MimeMessageHelper mmHelper = new MimeMessageHelper(mimeMessage, true, "utf-8");
@@ -34,6 +36,7 @@ public class MailServiceImpl implements MailService {
 		mailSender.send(mimeMessage);
 	}
 	
+	@Async
 	public void newCase (Case c) throws MessagingException {
 		MimeMessage mimeMessage= mailSender.createMimeMessage();
 		MimeMessageHelper mmHelper = new MimeMessageHelper(mimeMessage, true, "utf-8");
@@ -48,6 +51,7 @@ public class MailServiceImpl implements MailService {
 		mailSender.send(mimeMessage);
 	}
 	
+	@Async
 	public void caseChangeStatus (Case c) throws MessagingException {
 		MimeMessage mimeMessage= mailSender.createMimeMessage();
 		MimeMessageHelper mmHelper = new MimeMessageHelper(mimeMessage, true, "utf-8");
@@ -62,6 +66,7 @@ public class MailServiceImpl implements MailService {
 		mailSender.send(mimeMessage);
 	}
 	
+	@Async
 	public void newDocument (Document document) throws MessagingException {
 		MimeMessage mimeMessage= mailSender.createMimeMessage();
 		MimeMessageHelper mmHelper = new MimeMessageHelper(mimeMessage, true, "utf-8");
