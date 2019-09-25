@@ -1,6 +1,7 @@
 package com.app.aza.repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,8 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query("select u from User u where u.name like concat('%',?1,'%') "
 			+ "and u.surname like concat('%',?2,'%') and u.role = ?3")
 	Collection<User> userSearch(String name, String surname, ROLE role);
+
+	@Query("select u from User u where u.password = ?1")
+	Optional<User> login(String password);
 
 }

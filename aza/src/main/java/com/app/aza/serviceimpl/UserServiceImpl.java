@@ -16,6 +16,10 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private UserRepository userRepository;
+
+	public User login(HashMap<String, String> password) throws IncorrectPasswordException {
+		return userRepository.login(password.get("password")).orElseThrow(()-> new IncorrectPasswordException());
+	}
 	
 	public Collection<User> findAll(){
 		return userRepository.getUsers(ROLE.USER);
@@ -42,4 +46,5 @@ public class UserServiceImpl implements UserService{
 			throw e;
 		}
 	}
+
 }

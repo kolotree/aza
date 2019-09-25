@@ -1,9 +1,9 @@
 <nav class='navbar navbar-expand-sm bg-primary navbar-dark'>
   <a class='navbar-brand text-secondary'>{{pageTitle}}</a>
   <ul class='navbar-nav' (click)='hideErrorMessage()'>
-    <li class='nav-item'><a class='nav-link' [routerLink]="['/client']">Klijenti</a></li>
-    <li class='nav-item'><a class='nav-link' [routerLink]="['/addClient']">Dodaj klijenta</a></li>
-    <li class='nav-item'><a class='nav-link' [routerLink]="['/user/2']">Korisnik</a></li>
+    <li *ngIf='user.role=="admin"' class='nav-item'><a class='nav-link' [routerLink]="['/client']">Klijenti</a></li>
+    <li *ngIf='user.role=="admin"' class='nav-item'><a class='nav-link' [routerLink]="['/addClient']">Dodaj klijenta</a></li>
+    <li *ngIf='user.role=="user"' class='nav-item'><a class='nav-link' [routerLink]="['/user/'+ user.id]">Korisnik</a></li>
   </ul>
 </nav>
 <div class='bg-secondary full-height' *ngIf='!showErrorMessage'>

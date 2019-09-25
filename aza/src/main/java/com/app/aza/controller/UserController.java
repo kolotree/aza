@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.aza.dto.UserDTO;
 import com.app.aza.model.User;
+import com.app.aza.serviceimpl.IncorrectPasswordException;
 import com.app.aza.serviceimpl.MailServiceImpl;
 import com.app.aza.serviceimpl.UserNotFoundException;
 import com.app.aza.serviceimpl.UserServiceImpl;
@@ -32,6 +33,19 @@ public class UserController {
 	
 	@Autowired
 	private MailServiceImpl mailService;
+	
+	@RequestMapping(
+			value = "/login",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> login(@RequestBody HashMap<String, String> password){
+		try {
+			return new ResponseEntity<>(new UserDTO(userService.login(password)), HttpStatus.OK);
+		} catch (IncorrectPasswordException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+	}
 	
 	@RequestMapping(
 			value = "/user",
@@ -76,9 +90,9 @@ public class UserController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<UserDTO>> getUsersSearch(@RequestBody HashMap<String, String> search){
-			return new ResponseEntity<>(userService.userSearch(search).stream()
-										.map(u ->  new UserDTO(u))
-										.collect(Collectors.toList()), HttpStatus.OK);
+		return new ResponseEntity<>(userService.userSearch(search).stream()
+									.map(u ->  new UserDTO(u))
+									.collect(Collectors.toList()), HttpStatus.OK);
 	}
 	
 }
