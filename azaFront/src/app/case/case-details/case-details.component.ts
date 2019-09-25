@@ -58,7 +58,7 @@ export class CaseDetailsComponent implements OnInit {
     } else {
       this.caseService.updateCaseStatus(this.case).subscribe(
         (c: Case) => {
-          this.case = c;
+          this.case.status = c.status;
         }, (err: HttpErrorResponse) => {
           console.log(err);
       });

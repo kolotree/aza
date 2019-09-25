@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.aza.dto.UserDTO;
 import com.app.aza.model.User;
+import com.app.aza.serviceimpl.MailServiceImpl;
 import com.app.aza.serviceimpl.UserNotFoundException;
 import com.app.aza.serviceimpl.UserServiceImpl;
 
@@ -27,7 +30,9 @@ public class UserController {
 	@Autowired
 	private UserServiceImpl userService;
 	
-
+	@Autowired
+	private MailServiceImpl mailService;
+	
 	@RequestMapping(
 			value = "/user",
 			method = RequestMethod.GET,
@@ -57,8 +62,10 @@ public class UserController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createUser(@RequestBody UserDTO user){
 		try {
-			return new ResponseEntity<>(new UserDTO(userService.createOrUpdate(new User(user))), HttpStatus.OK);
-		} catch (UserNotFoundException e) {
+			User newUser = userService.createOrUpdate(new User(user));
+			mailService.newUser(newUser);
+			return new ResponseEntity<>(new UserDTO(newUser), HttpStatus.OK);
+		} catch (UserNotFoundException | MessagingException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}

@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +21,7 @@ import com.app.aza.dto.CaseDTO;
 import com.app.aza.model.Case;
 import com.app.aza.serviceimpl.CaseNotFoundException;
 import com.app.aza.serviceimpl.CaseServiceImpl;
+import com.app.aza.serviceimpl.MailServiceImpl;
 import com.app.aza.serviceimpl.UserNotFoundException;
 
 @RestController
@@ -27,6 +30,9 @@ public class CaseController {
 	
 	@Autowired
 	private CaseServiceImpl caseService;
+	
+	@Autowired 
+	private MailServiceImpl mailService;
 	
 	@RequestMapping(
 			value = "/client/case/{id}",
@@ -57,8 +63,10 @@ public class CaseController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> create(@RequestBody CaseDTO caseDTO){
 			try {
-				return new ResponseEntity<>(new CaseDTO(caseService.createOrUpdate(new Case(caseDTO))), HttpStatus.OK);
-			} catch (UserNotFoundException | CaseNotFoundException e) {	
+				Case c = caseService.createOrUpdate(new Case(caseDTO));
+				mailService.newCase(c);
+				return new ResponseEntity<>(new CaseDTO(c), HttpStatus.OK);
+			} catch (UserNotFoundException | CaseNotFoundException | MessagingException e) {	
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 			}
 	}
@@ -70,8 +78,10 @@ public class CaseController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateStatus(@RequestBody CaseDTO caseDTO){
 			try {
-				return new ResponseEntity<>(new CaseDTO(caseService.updateStatus(new Case(caseDTO))), HttpStatus.OK);
-			} catch (CaseNotFoundException e) {		
+				Case c = caseService.updateStatus(new Case(caseDTO));
+				mailService.caseChangeStatus(c);
+				return new ResponseEntity<>(new CaseDTO(c), HttpStatus.OK);
+			} catch (CaseNotFoundException | MessagingException e) {		
 				return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 			}
 	}

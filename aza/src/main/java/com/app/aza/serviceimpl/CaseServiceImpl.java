@@ -3,6 +3,7 @@ package com.app.aza.serviceimpl;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class CaseServiceImpl implements CaseService {
 		if(c.getId() == null) {
 			c.setUser(userRepository.findById(new Long(c.getUser().getId()))
 					.orElseThrow(() -> new UserNotFoundException(c.getUser().getId().toString())));
+			c.setDocuments(new HashSet<>());
 			return caseRepository.save(c);
 		}
 		Case caseUpdate = caseRepository.findById(c.getId()).orElseThrow(() -> new CaseNotFoundException(c.getId().toString()));
