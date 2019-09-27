@@ -18,14 +18,16 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit() {
-    this.user = JSON.parse(localStorage.getItem('azaUser'));
+    const u = localStorage.getItem('azaUser');
+    if (u) {
+      this.user = JSON.parse(u);
+    }
   }
 
   ngAfterViewInit() {
     EmitterService.get(EventChannels.SUCCESS_LOGIN).subscribe(
       value => {
         this.user = JSON.parse(value);
-        console.log('cao');
       }
     );
   }
@@ -34,4 +36,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.messageEvent.emit(false);
   }
 
+  logout(): void {
+    this.user = new User();
+    localStorage.removeItem('azaUser');
+  }
 }

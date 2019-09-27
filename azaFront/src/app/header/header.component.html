@@ -1,10 +1,17 @@
 <nav class='navbar navbar-expand-sm bg-primary navbar-dark'>
-  <a class='navbar-brand text-secondary'>{{pageTitle}}</a>
-  <ul class='navbar-nav' (click)='hideErrorMessage()'>
-    <li *ngIf='user.role=="admin"' class='nav-item'><a class='nav-link' [routerLink]="['/client']">Klijenti</a></li>
-    <li *ngIf='user.role=="admin"' class='nav-item'><a class='nav-link' [routerLink]="['/addClient']">Dodaj klijenta</a></li>
-    <li *ngIf='user.role=="user"' class='nav-item'><a class='nav-link' [routerLink]="['/user/'+ user.id]">Korisnik</a></li>
-  </ul>
+  <div class="navbar-collapse collapse w-100 order-1 dual-collapse2">
+    <a class='navbar-brand text-secondary'>{{pageTitle}}</a>
+    <ul class='navbar-nav mr-auto' (click)='hideErrorMessage()'>
+      <li *ngIf='user.role=="admin"' class='nav-item'><a class='nav-link' [routerLink]="['/client']">Klijenti</a></li>
+      <li *ngIf='user.role=="admin"' class='nav-item'><a class='nav-link' [routerLink]="['/addClient']">Dodaj klijenta</a></li>
+      <li *ngIf='user.role=="user"' class='nav-item'><a class='nav-link' [routerLink]="['/user/'+ user.id]">Korisnik</a></li>
+    </ul>
+  </div>
+  <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+    <ul class="navbar-nav ml-auto" (click)='hideErrorMessage()'>
+      <li *ngIf='user.role=="admin" || user.role == "user"' class="nav-item"><a class="nav-link" (click)='logout()' [routerLink]="['/login']">Odjavi se</a></li>
+    </ul>
+  </div>
 </nav>
 <div class='bg-secondary full-height' *ngIf='!showErrorMessage'>
   <div class="container bg-white w-75 full-height">
