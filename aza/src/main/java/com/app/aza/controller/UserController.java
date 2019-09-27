@@ -19,21 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.aza.dto.UserDTO;
 import com.app.aza.model.User;
+import com.app.aza.service.MailService;
+import com.app.aza.service.UserService;
 import com.app.aza.serviceimpl.IncorrectPasswordException;
-import com.app.aza.serviceimpl.MailServiceImpl;
 import com.app.aza.serviceimpl.PasswordExistsException;
 import com.app.aza.serviceimpl.UserNotFoundException;
-import com.app.aza.serviceimpl.UserServiceImpl;
 
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
 public class UserController {
 	
 	@Autowired
-	private UserServiceImpl userService;
+	private UserService userService;
 	
 	@Autowired
-	private MailServiceImpl mailService;
+	private MailService mailService;
 	
 	@RequestMapping(
 			value = "/login",
