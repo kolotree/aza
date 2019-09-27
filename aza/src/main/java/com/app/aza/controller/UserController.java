@@ -21,6 +21,7 @@ import com.app.aza.dto.UserDTO;
 import com.app.aza.model.User;
 import com.app.aza.serviceimpl.IncorrectPasswordException;
 import com.app.aza.serviceimpl.MailServiceImpl;
+import com.app.aza.serviceimpl.PasswordExistsException;
 import com.app.aza.serviceimpl.UserNotFoundException;
 import com.app.aza.serviceimpl.UserServiceImpl;
 
@@ -79,7 +80,7 @@ public class UserController {
 			User newUser = userService.createOrUpdate(new User(user));
 			mailService.newUser(newUser);
 			return new ResponseEntity<>(new UserDTO(newUser), HttpStatus.OK);
-		} catch (UserNotFoundException | MessagingException e) {
+		} catch (UserNotFoundException | MessagingException | PasswordExistsException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}

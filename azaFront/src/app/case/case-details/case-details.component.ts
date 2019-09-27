@@ -8,6 +8,8 @@ import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask 
 import { Observable, from } from 'rxjs';
 import { tap, finalize } from 'rxjs/operators';
 import { DocumentService } from 'src/app/services/document.service';
+import { EmitterService } from 'src/app/services/emitter.service';
+import { EventChannels } from 'src/app/model/eventChannels';
 
 @Component({
   selector: 'app-case-details',
@@ -41,8 +43,8 @@ export class CaseDetailsComponent implements OnInit {
       this.caseService.getCase(id).subscribe(
         (c: Case) => {
           this.case = c;
-        }, (err: HttpErrorResponse) => {
-          console.log(err);
+        }, (error: HttpErrorResponse) => {
+          EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
         });
       this.caseService.getStatus().subscribe(
         (status: string[]) => {
@@ -59,8 +61,8 @@ export class CaseDetailsComponent implements OnInit {
       this.caseService.updateCaseStatus(this.case).subscribe(
         (c: Case) => {
           this.case.status = c.status;
-        }, (err: HttpErrorResponse) => {
-          console.log(err);
+        }, (error: HttpErrorResponse) => {
+          EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
       });
       this.statusButton = 'Izmeni status';
       this.changeStatus = false;

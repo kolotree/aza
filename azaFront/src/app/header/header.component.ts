@@ -12,6 +12,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   pageTitle = 'AZA';
   user: User = new User();
+  showSpinner = false;
   @Input() public showErrorMessage: boolean;
   @Output() public messageEvent = new EventEmitter();
 
@@ -28,6 +29,15 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     EmitterService.get(EventChannels.SUCCESS_LOGIN).subscribe(
       value => {
         this.user = JSON.parse(value);
+      }
+    );
+    EmitterService.get(EventChannels.SPINNER_EVENT).subscribe(
+      value => {
+        if (value === 'on') {
+          this.showSpinner = true;
+        } else {
+          this.showSpinner = false;
+        }
       }
     );
   }

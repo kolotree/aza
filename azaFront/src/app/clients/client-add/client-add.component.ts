@@ -15,17 +15,22 @@ export class ClientAddComponent implements OnInit {
 
   pageTitle = 'Dodavanje klijenta';
   userModel: User = new User();
+  errorMessage: string;
 
   constructor(private userService: UserService,
               private router: Router) { }
 
   ngOnInit() { }
   onSubmit(): void {
+    EmitterService.get(EventChannels.SPINNER_EVENT).emit('on');
     this.userService.createUser(this.userModel).subscribe(
       (user: User) => {
         this.router.navigate(['/client/' + user.id]);
       }, (error: HttpErrorResponse) => {
-        EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
+        EmitterService.get(EventChannels.SPINNER_EVENT).emit(null);
+        this.errorMessage = error.error;
+      }, () => {
+        EmitterService.get(EventChannels.SPINNER_EVENT).emit(null);
       });
   }
 

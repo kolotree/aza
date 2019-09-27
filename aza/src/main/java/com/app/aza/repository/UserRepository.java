@@ -24,4 +24,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	@Query("select u from User u where u.password = ?1")
 	Optional<User> login(String password);
 
+	@Query("select count(u)>0 from User u where u.password=?1")
+	boolean existsPassword(String password);
+
 }

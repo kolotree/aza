@@ -13,8 +13,21 @@
     </ul>
   </div>
 </nav>
-<div class='bg-secondary full-height' *ngIf='!showErrorMessage'>
-  <div class="container bg-white w-75 full-height">
-    <router-outlet></router-outlet>
+<div class="wrapper">
+  <div class="overlay" *ngIf="showSpinner">
+    <div class="spinner-wrapper">    
+      <div class="text-center">
+          <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;" role="status">
+              <span class="sr-only"></span>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='bg-secondary full-height' *ngIf='!showErrorMessage'>
+    <div class="container bg-white w-75 full-height">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
+

@@ -1,5 +1,5 @@
 export class EventChannels {
-    public static UNEXPECTED_ERROR = 'unexpectedError';
-    public static SUCCESS_LOGIN = 'successMessage';
+    public static SPINNER_EVENT = 'spinnerEvent';
+    public static SUCCESS_LOGIN = 'successLogin';
     public static ERROR_MESSAGE = 'errorMessage';
 }

@@ -1,6 +1,6 @@
 INSERT INTO `aza_database`.`user` (`id`, `email`, `name`, `password`, `role`, `surname`) VALUES ('1', 'admin', 'admin', 'admin', '0', 'admin');
-INSERT INTO `aza_database`.`user` (`id`, `email`, `name`, `password`, `role`, `surname`) VALUES ('2', 'mica97@email.com', 'Marko', '123', '1', 'Markovic');
-INSERT INTO `aza_database`.`user` (`id`, `email`, `name`, `password`, `role`, `surname`) VALUES ('3', 'mica97@email.com', 'Jovan', '456', '1', 'Jovanic');
+INSERT INTO `aza_database`.`user` (`id`, `email`, `name`, `password`, `role`, `surname`) VALUES ('2', 'mica97@email.com', 'Marko', '12345678', '1', 'Markovic');
+INSERT INTO `aza_database`.`user` (`id`, `email`, `name`, `password`, `role`, `surname`) VALUES ('3', 'mica97@email.com', 'Jovan', '45678901', '1', 'Jovanic');
 INSERT INTO `aza_database`.`case_table` (`id`, `date`, `name`, `status`, `user`) VALUES ('1', '2019-09-13', 'Slucaj1', 'IN_PROCESS', '2');
 INSERT INTO `aza_database`.`case_table` (`id`, `date`, `name`, `status`, `user`) VALUES ('2', '2019-09-13', 'Slucaj2', 'IN_PROCESS', '2');
 INSERT INTO `aza_database`.`document` (`id`, `name`, `refernce`, `case_doc`) VALUES ('1', 'nadareni.doc', 'https://firebasestorage.googleapis.com/v0/b/apza-9710f.appspot.com/o/2%2F1568915015663_nadareni.doc?alt=media&token=0ceda4ab-054d-479f-b956-a6961d7a0773', '1');

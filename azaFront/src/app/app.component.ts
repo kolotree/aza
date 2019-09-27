@@ -20,7 +20,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     EmitterService.get(EventChannels.ERROR_MESSAGE).subscribe(
       value => {
-        this.message = value;
+        if (typeof (value) === 'object') {
+          this.message = 'Došlo je do greške!';
+        } else {
+          this.message = value;
+        }
         this.showErrorMessage = true;
       }
     );

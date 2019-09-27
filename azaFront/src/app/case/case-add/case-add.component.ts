@@ -43,12 +43,17 @@ export class CaseAddComponent implements OnInit {
   }
 
   onSubmit(): void {
+    EmitterService.get(EventChannels.SPINNER_EVENT).emit('on');
     this.caseService.createCase(this.caseModel).subscribe(
       (c: Case) => {
         this.router.navigate(['/case/' + c.id]);
       }, (error: HttpErrorResponse) => {
+        EmitterService.get(EventChannels.SPINNER_EVENT).emit(null);
         EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
-      });
+      }, () => {
+        EmitterService.get(EventChannels.SPINNER_EVENT).emit(null);
+      }
+    );
   }
 
   validateStatus(value: string): void {

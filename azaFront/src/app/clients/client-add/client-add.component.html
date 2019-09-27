@@ -18,17 +18,18 @@
             </div>
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" required #email='ngModel' 
+                <input type="email" required #email='ngModel' pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" 
                 [class.is-invalid]="email.invalid && email.touched" class="form-control" 
                 name="emailUser" placeholder="Email" [(ngModel)]='userModel.email'> 
-                <small class="text-danger" [class.d-none]='email.valid || email.untouched'>Morate popuniti polje</small>
+                <small class="text-danger" [class.d-none]='email.valid || email.untouched'>Morate popuniti polje unosom validnog email-a</small>
             </div>
             <div class="form-group">
                 <label>Šifra</label>
-                <input type="text" required #password='ngModel' 
+                <input type="text" required #password='ngModel' pattern=".{8,32}$"
                 [class.is-invalid]="password.invalid && password.touched" class="form-control" 
                 name="passwordUser" placeholder="Šifra" [(ngModel)]='userModel.password'>
-                <small class="text-danger" [class.d-none]='password.valid || password.untouched'>Morate popuniti polje</small>
+                <small class="text-danger" [class.d-none]='password.valid || password.untouched'>Morate popuniti polje dužine od 8 do 32 karaktera</small><br>
+                <small class="text-danger">{{errorMessage}}</small>
             </div>
             <button [disabled]="userForm.form.invalid" class="btn btn-outline-secondary btn-block" type="submit">Dodaj</button>
         </form>

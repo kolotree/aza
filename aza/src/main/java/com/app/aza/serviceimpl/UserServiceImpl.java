@@ -25,9 +25,11 @@ public class UserServiceImpl implements UserService{
 		return userRepository.getUsers(ROLE.USER);
 	}
 	
-	public User createOrUpdate(User user) throws UserNotFoundException {
+	public User createOrUpdate(User user) throws UserNotFoundException, PasswordExistsException {
 		if(user.getId() == null) {
 			user.setRole(ROLE.USER);
+			if(userRepository.existsPassword(user.getPassword()))
+				throw new PasswordExistsException();
 			return userRepository.save(user);
 		}
 		User userUpdate = userRepository.findById(user.getId()).orElseThrow(() -> new UserNotFoundException(user.getId().toString()));
