@@ -1,14 +1,11 @@
 <div>
     <h1 class="text-center">{{pageTitle}}</h1>
     <div class="row">
-        <div class="col-4">
-            <input type="text" class="form-control" placeholder="Ime" [(ngModel)]='searchName'>
+        <div class="col-6">
+            <input type="text" class="form-control" placeholder="Ime" (keyup)="onKeyUp()" [(ngModel)]='searchName'>
         </div>
-        <div class="col-4">
-            <input type="text" class="form-control" placeholder="Prezime" [(ngModel)]='searchSurname'>
-        </div>
-        <div class="col-4">
-            <button type="button" class="btn btn-outline-secondary btn-block" (click)='searchUsers()'>Pretraži</button>
+        <div class="col-6">
+            <input type="text" class="form-control" placeholder="Prezime" (keyup)="onKeyUp()" [(ngModel)]='searchSurname'>
         </div>
     </div>
     <br>

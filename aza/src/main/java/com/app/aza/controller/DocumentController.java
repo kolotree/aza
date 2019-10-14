@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.aza.dto.DocumentDTO;
 import com.app.aza.model.Document;
+import com.app.aza.service.DocumentService;
+import com.app.aza.service.MailService;
 import com.app.aza.serviceimpl.CaseNotFoundException;
-import com.app.aza.serviceimpl.DocumentServiceImpl;
-import com.app.aza.serviceimpl.MailServiceImpl;
 
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
 public class DocumentController {
 
 	@Autowired
-	private DocumentServiceImpl documentService;
+	private DocumentService documentService;
 	
 	@Autowired
-	private MailServiceImpl mailService;
+	private MailService mailService;
 	
 	@RequestMapping(
 			value = "/document",

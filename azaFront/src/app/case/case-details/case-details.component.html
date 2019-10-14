@@ -60,6 +60,6 @@
     </div>
     <br>
     <ol>
-        <li *ngFor="let doc of case.documents">{{doc.name}}</li>
+        <li *ngFor="let doc of case.documents"><a [href]="doc.reference">{{doc.name}}</a></li>
     </ol>
 </div>

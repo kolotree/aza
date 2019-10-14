@@ -1,14 +1,11 @@
 <div>
     <h1 class="text-center">{{pageTitle}}</h1>
     <div class="row">
-        <div class="col-4">
-            <input type="date" class="form-control" placeholder="Datum" [(ngModel)]="searchDate">
+        <div class="col-6">
+            <input type="date" class="form-control" placeholder="Datum" (change)="onKeyUp()" [(ngModel)]="searchDate">
         </div>
-        <div class="col-4">
-            <input type="text" class="form-control" placeholder="Predmet" [(ngModel)]="searchName">
-        </div>
-        <div class="col-4">
-            <button type="button" class="btn btn-outline-secondary btn-block" (click)="searchCases()">Pretraži</button>
+        <div class="col-6">
+            <input type="text" class="form-control" placeholder="Predmet" (keyup)="onKeyUp()" [(ngModel)]="searchName">
         </div>
     </div>
     <br>

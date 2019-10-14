@@ -5,6 +5,8 @@ import { CaseService } from 'src/app/services/case.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EmitterService } from 'src/app/services/emitter.service';
 import { EventChannels } from 'src/app/model/eventChannels';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-case-list',
@@ -20,7 +22,7 @@ export class CaseListComponent implements OnInit {
   searchName = '';
   searchStatus = '';
   searchDate = '';
-
+  subject: Subject<object> = new Subject();
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -40,11 +42,14 @@ export class CaseListComponent implements OnInit {
           this.caseStatus = status;
       });
     }
-    // dodati ako je potrebno za listu svih predmeta nezavisno od toga koji korisnik je u pitanju
+    this.subject.pipe(
+      debounceTime(750)
+    ).subscribe(
+      (search) => this.searchCases(search)
+    );
   }
 
-  searchCases(): void {
-    const search = { id: this.id, name: this.searchName, status: this.searchStatus, date: this.searchDate };
+  searchCases(search: object): void {
     this.caseService.searchCasesClient(search).subscribe(
       (cases: Case[]) => {
         this.cases = cases;
@@ -63,4 +68,7 @@ export class CaseListComponent implements OnInit {
     this.router.navigate(['/addCase/' + id]);
   }
 
+  onKeyUp() {
+    this.subject.next({ id: this.id, name: this.searchName, status: this.searchStatus, date: this.searchDate });
+  }
 }

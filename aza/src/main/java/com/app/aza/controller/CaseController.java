@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.aza.dto.CaseDTO;
 import com.app.aza.model.Case;
+import com.app.aza.service.CaseService;
+import com.app.aza.service.MailService;
 import com.app.aza.serviceimpl.CaseNotFoundException;
-import com.app.aza.serviceimpl.CaseServiceImpl;
-import com.app.aza.serviceimpl.MailServiceImpl;
 import com.app.aza.serviceimpl.UserNotFoundException;
 
 @RestController
@@ -29,10 +29,10 @@ import com.app.aza.serviceimpl.UserNotFoundException;
 public class CaseController {
 	
 	@Autowired
-	private CaseServiceImpl caseService;
+	private CaseService caseService;
 	
 	@Autowired 
-	private MailServiceImpl mailService;
+	private MailService mailService;
 	
 	@RequestMapping(
 			value = "/client/case/{id}",

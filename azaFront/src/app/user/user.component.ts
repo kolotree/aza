@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EmitterService } from '../services/emitter.service';
 import { EventChannels } from '../model/eventChannels';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user',
@@ -18,6 +20,7 @@ export class UserComponent implements OnInit {
   cases: Case[] = [];
   searchName = '';
   searchDate = '';
+  subject: Subject<object> = new Subject();
 
   constructor(
     private caseService: CaseService,
@@ -33,10 +36,14 @@ export class UserComponent implements OnInit {
           EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
       });
     }
+    this.subject.pipe(
+      debounceTime(750)
+    ).subscribe(
+      (search) => this.searchCases(search)
+    );
   }
 
-  searchCases(): void {
-    const search = { id: this.id, name: this.searchName, status: '', date: this.searchDate };
+  searchCases(search: object): void {
     this.caseService.searchCasesClient(search).subscribe(
       (cases: Case[]) => {
         this.cases = cases;
@@ -44,5 +51,9 @@ export class UserComponent implements OnInit {
         EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
       }
     );
+  }
+
+  onKeyUp() {
+    this.subject.next({ id: this.id, name: this.searchName, status: '', date: this.searchDate });
   }
 }

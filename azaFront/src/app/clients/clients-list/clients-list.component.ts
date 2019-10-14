@@ -5,6 +5,8 @@ import { UserService } from 'src/app/services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EmitterService } from 'src/app/services/emitter.service';
 import { EventChannels } from 'src/app/model/eventChannels';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-clients-list',
@@ -18,6 +20,7 @@ export class ClientsListComponent implements OnInit {
   searchName = '';
   searchSurname = '';
   errorMessage = '';
+  subject: Subject<object> = new Subject();
 
   constructor(
     private userService: UserService,
@@ -29,11 +32,15 @@ export class ClientsListComponent implements OnInit {
         this.users = users;
       }, (error: HttpErrorResponse) => {
         EmitterService.get(EventChannels.ERROR_MESSAGE).emit(error.error);
-      });
+    });
+    this.subject.pipe(
+      debounceTime(750)
+    ).subscribe(
+      (search) => this.searchUsers(search)
+    );
   }
 
-  searchUsers(): void {
-    const search = { name: this.searchName, surname: this.searchSurname };
+  searchUsers(search: object): void {
     this.userService.searchUsers(search).subscribe(
       (users: User[]) => {
         this.users = users;
@@ -42,7 +49,12 @@ export class ClientsListComponent implements OnInit {
       }
     );
   }
+
   details(id: string): void {
     this.router.navigate(['/client/' + id]);
+  }
+
+  onKeyUp() {
+    this.subject.next({ name: this.searchName, surname: this.searchSurname });
   }
 }
