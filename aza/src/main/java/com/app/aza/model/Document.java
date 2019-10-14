@@ -11,7 +11,12 @@ import javax.persistence.Table;
 
 import com.app.aza.dto.DocumentDTO;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@Getter @Setter @NoArgsConstructor
 @Table(name="document")
 public class Document {
 
@@ -47,36 +52,8 @@ public class Document {
 		c.setId(document.getCaseId());
 	}
 
-	public Document() {
-		super();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getReference() {
-		return reference;
-	}
-
-	public void setReference(String reference) {
-		this.reference = reference;
-	}
-
 	public Case getCase() {
-		return c;
+		return this.c;
 	}
 
 	public void setCase(Case c) {

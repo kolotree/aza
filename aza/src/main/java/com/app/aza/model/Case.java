@@ -18,7 +18,12 @@ import javax.persistence.Table;
 
 import com.app.aza.dto.CaseDTO;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@Getter @Setter @NoArgsConstructor
 @Table(name = "case_table")
 public class Case {
 
@@ -62,58 +67,7 @@ public class Case {
 		this.user = new User(c.getUser());
 		this.status = STATUS.fromString(c.getStatus());
 	}
-	public Case() {
-		super();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public STATUS getStatus() {
-		return status;
-	}
-
-	public void setStatus(STATUS status) {
-		this.status = status;
-	}
-
-	public Set<Document> getDocuments() {
-		return documents;
-	}
-
-	public void setDocuments(Set<Document> documents) {
-		this.documents = documents;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
+	
 	public void update(Case c) {
 		this.date = c.getDate();
 		this.name = c.getName();

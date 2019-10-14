@@ -6,8 +6,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +15,12 @@ import javax.persistence.Table;
 
 import com.app.aza.dto.UserDTO;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
+@Getter @Setter @NoArgsConstructor
 @Table(name = "user")
 public class User {
 
@@ -64,67 +67,6 @@ public class User {
 		this.password = user.getPassword();
 		this.role = ROLE.fromString(user.getRole());
 		this.cases = new HashSet<>();
-	}
-
-	public User() {
-		super();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public ROLE getRole() {
-		return role;
-	}
-
-	@Enumerated(EnumType.STRING)
-	public void setRole(ROLE role) {
-		this.role = role;
-	}
-
-	public Set<Case> getCases() {
-		return cases;
-	}
-
-	public void setCases(Set<Case> cases) {
-		this.cases = cases;
 	}
 
 	public void update(User user) {
