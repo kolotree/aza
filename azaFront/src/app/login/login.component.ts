@@ -14,7 +14,8 @@ import { EventChannels } from '../model/eventChannels';
 export class LoginComponent implements OnInit {
 
   pageTitle = 'Prijavljivanje';
-  password = '';
+  email: string;
+  password: string;
   errorMessage: string;
 
   constructor(private router: Router,
@@ -25,7 +26,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     this.errorMessage = '';
-    this.userService.login({ password: this.password }).subscribe(
+    this.userService.login({ password: this.password , email: this.email}).subscribe(
       (user: User) => {
         localStorage.setItem('azaUser', JSON.stringify(user));
         if (user.role === 'user') {

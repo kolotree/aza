@@ -33,13 +33,13 @@ public class DocumentController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> create(@RequestBody DocumentDTO documentDTO){
-			try {
-				Document document = documentService.create(new Document(documentDTO));
-				mailService.newDocument(document);
-				return new ResponseEntity<>(new DocumentDTO(document), HttpStatus.OK);
-			} catch (CaseNotFoundException | MessagingException e) {	
-				return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-			}
+	public ResponseEntity<?> create(@RequestBody DocumentDTO documentDTO) {
+		try {
+			Document document = documentService.create(new Document(documentDTO));
+			mailService.newDocument(document);
+			return new ResponseEntity<>(new DocumentDTO(document), HttpStatus.OK);
+		} catch (CaseNotFoundException | MessagingException e) {	
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 	}
 }

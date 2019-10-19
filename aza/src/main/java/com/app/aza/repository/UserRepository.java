@@ -21,10 +21,10 @@ public interface UserRepository extends JpaRepository<User, Long>{
 			+ "and u.surname like concat('%',?2,'%') and u.role = ?3")
 	Collection<User> userSearch(String name, String surname, ROLE role);
 
-	@Query("select u from User u where u.password = ?1")
-	Optional<User> login(String password);
+	@Query("select u from User u where u.email = ?1")
+	Optional<User> login(String email);
 
-	@Query("select count(u)>0 from User u where u.password=?1")
-	boolean existsPassword(String password);
+	@Query("select count(u)>0 from User u where u.email=?1")
+	boolean existsEmail(String email);
 
 }

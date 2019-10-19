@@ -3,9 +3,16 @@
         <div class="col-5">
             <h1>{{pageTitle}}</h1>
             <form #loginForm='ngForm' (ngSubmit)='onSubmit()' novalidate>
+                <small class="text-danger">{{errorMessage}}</small>
+                <div class="form-group">
+                    <label>E-mail</label><br>
+                    <input type="text" required #username='ngModel'
+                    [class.is-invalid]="username.invalid && username.touched" class="form-control" 
+                    name="username" placeholder="E-mail" [(ngModel)]='email'>
+                    <small class="text-danger" [class.d-none]='username.valid || username.untouched'>Morate popunit polje</small>
+                </div>
                 <div class="form-group">
                     <label>Šifra</label><br>
-                    <small class="text-danger">{{errorMessage}}</small>
                     <input type="text" required #login='ngModel'
                     [class.is-invalid]="login.invalid && login.touched" class="form-control" 
                     name="login" placeholder="Šifra" [(ngModel)]='password'>

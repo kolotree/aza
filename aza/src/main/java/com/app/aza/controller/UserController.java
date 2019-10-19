@@ -21,8 +21,9 @@ import com.app.aza.dto.UserDTO;
 import com.app.aza.model.User;
 import com.app.aza.service.MailService;
 import com.app.aza.service.UserService;
+import com.app.aza.serviceimpl.EmailExistsException;
+import com.app.aza.serviceimpl.IncorrectEmailException;
 import com.app.aza.serviceimpl.IncorrectPasswordException;
-import com.app.aza.serviceimpl.PasswordExistsException;
 import com.app.aza.serviceimpl.UserNotFoundException;
 
 @RestController
@@ -40,10 +41,10 @@ public class UserController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> login(@RequestBody HashMap<String, String> password){
+	public ResponseEntity<?> login(@RequestBody HashMap<String, String> password) {
 		try {
 			return new ResponseEntity<>(new UserDTO(userService.login(password)), HttpStatus.OK);
-		} catch (IncorrectPasswordException e) {
+		} catch (IncorrectPasswordException | IncorrectEmailException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}
@@ -52,7 +53,7 @@ public class UserController {
 			value = "/user",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<UserDTO>> getUsers(){
+	public ResponseEntity<Collection<UserDTO>> getUsers() {
 		return new ResponseEntity<>(userService.findAll().stream()
 									.map(u -> new UserDTO(u))
 									.collect(Collectors.toList()), HttpStatus.OK);
@@ -62,7 +63,7 @@ public class UserController {
 			value = "/user/{id}",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getUser(@PathVariable("id") Long id){
+	public ResponseEntity<?> getUser(@PathVariable("id") Long id) {
 		try {
 			return new ResponseEntity<>(new UserDTO(userService.findOne(id)), HttpStatus.OK);
 		} catch (UserNotFoundException e) {
@@ -75,12 +76,12 @@ public class UserController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createUser(@RequestBody UserDTO user){
+	public ResponseEntity<?> createUser(@RequestBody UserDTO user) {
 		try {
 			User newUser = userService.createOrUpdate(new User(user));
-			mailService.newUser(newUser);
+			mailService.newUser(newUser.getEmail(), user.getPassword());
 			return new ResponseEntity<>(new UserDTO(newUser), HttpStatus.OK);
-		} catch (UserNotFoundException | MessagingException | PasswordExistsException e) {
+		} catch (UserNotFoundException | MessagingException | EmailExistsException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}
@@ -90,7 +91,7 @@ public class UserController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<UserDTO>> getUsersSearch(@RequestBody HashMap<String, String> search){
+	public ResponseEntity<Collection<UserDTO>> getUsersSearch(@RequestBody HashMap<String, String> search) {
 		return new ResponseEntity<>(userService.userSearch(search).stream()
 									.map(u ->  new UserDTO(u))
 									.collect(Collectors.toList()), HttpStatus.OK);

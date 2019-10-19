@@ -7,7 +7,7 @@ import com.app.aza.model.Document;
 import com.app.aza.model.User;
 
 public interface MailService {
-	void newUser (User user) throws MessagingException;
+	void newUser (String email, String password) throws MessagingException;
 	void newCase (Case c) throws MessagingException;
 	void caseChangeStatus (Case c) throws MessagingException;
 	void newDocument (Document document) throws MessagingException;

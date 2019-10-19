@@ -22,16 +22,16 @@ public class MailServiceImpl implements MailService {
 	private JavaMailSender mailSender;
 	
 	@Async
-	public void newUser (User user) throws MessagingException {
+	public void newUser (String email, String password) throws MessagingException {
 		MimeMessage mimeMessage= mailSender.createMimeMessage();
 		MimeMessageHelper mmHelper = new MimeMessageHelper(mimeMessage, true, "utf-8");
 		String message = "<html><head><meta charset=\"UTF-8\"></head>"
 				+ "<body><h3>Aplikacija za advokate - Dobordošli!</h3><br>"
 				+ "<div><p>Poštovani korisniče možete pristupati Vašim predmetima na našem "
 				+ "<a target=\"_blank\" href = \"http://localhost:4200/login\"><u>sajtu</u></a> "
-				+ " pomoću šifre: <b>" + user.getPassword() + "<b>.</p></div></body></html>";
+				+ " pomoću šifre: <b>" + password + "<b>.</p></div></body></html>";
         mmHelper.setText(message, true);
-		mmHelper.setTo(user.getEmail());
+		mmHelper.setTo(email);
 		mmHelper.setSubject("Aplikacija za advokate - dodela šifre");
 		mailSender.send(mimeMessage);
 	}

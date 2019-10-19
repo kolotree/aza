@@ -38,22 +38,22 @@ public class CaseController {
 			value = "/client/case/{id}",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<CaseDTO>> getClietnCases(@PathVariable("id") Long id){
-			return new ResponseEntity<>(caseService.clientCases(id).stream()
-										.map(c ->  new CaseDTO(c))
-										.collect(Collectors.toList()), HttpStatus.OK);
+	public ResponseEntity<Collection<CaseDTO>> getClietnCases(@PathVariable("id") Long id) {
+		return new ResponseEntity<>(caseService.clientCases(id).stream()
+									.map(c ->  new CaseDTO(c))
+									.collect(Collectors.toList()), HttpStatus.OK);
 	}
 	
 	@RequestMapping(
 			value = "/case/{id}",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getCase(@PathVariable("id") Long id){
-			try {
-				return new ResponseEntity<>(new CaseDTO(caseService.findOne(id)), HttpStatus.OK);
-			} catch (CaseNotFoundException e) {	
-				return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-			}
+	public ResponseEntity<?> getCase(@PathVariable("id") Long id) {
+		try {
+			return new ResponseEntity<>(new CaseDTO(caseService.findOne(id)), HttpStatus.OK);
+		} catch (CaseNotFoundException e) {	
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@RequestMapping(
@@ -61,14 +61,14 @@ public class CaseController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> create(@RequestBody CaseDTO caseDTO){
-			try {
-				Case c = caseService.createOrUpdate(new Case(caseDTO));
-				mailService.newCase(c);
-				return new ResponseEntity<>(new CaseDTO(c), HttpStatus.OK);
-			} catch (UserNotFoundException | CaseNotFoundException | MessagingException e) {	
-				return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-			}
+	public ResponseEntity<?> create(@RequestBody CaseDTO caseDTO) {
+		try {
+			Case c = caseService.createOrUpdate(new Case(caseDTO));
+			mailService.newCase(c);
+			return new ResponseEntity<>(new CaseDTO(c), HttpStatus.OK);
+		} catch (UserNotFoundException | CaseNotFoundException | MessagingException e) {	
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	@RequestMapping(
@@ -76,22 +76,22 @@ public class CaseController {
 			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> updateStatus(@RequestBody CaseDTO caseDTO){
-			try {
-				Case c = caseService.updateStatus(new Case(caseDTO));
-				mailService.caseChangeStatus(c);
-				return new ResponseEntity<>(new CaseDTO(c), HttpStatus.OK);
-			} catch (CaseNotFoundException | MessagingException e) {		
-				return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-			}
+	public ResponseEntity<?> updateStatus(@RequestBody CaseDTO caseDTO) {
+		try {
+			Case c = caseService.updateStatus(new Case(caseDTO));
+			mailService.caseChangeStatus(c);
+			return new ResponseEntity<>(new CaseDTO(c), HttpStatus.OK);
+		} catch (CaseNotFoundException | MessagingException e) {		
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	@RequestMapping(
 			value = "/status",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<String>> getStatus(){
-			return new ResponseEntity<>(caseService.allStatus(), HttpStatus.OK);
+	public ResponseEntity<Collection<String>> getStatus() {
+		return new ResponseEntity<>(caseService.allStatus(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(
@@ -99,9 +99,9 @@ public class CaseController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<CaseDTO>> getClietnCasesSearch(@RequestBody HashMap<String, String> search){
-			return new ResponseEntity<>(caseService.clientCasesSearch(search).stream()
-										.map(c ->  new CaseDTO(c))
-										.collect(Collectors.toList()), HttpStatus.OK);
+	public ResponseEntity<Collection<CaseDTO>> getClietnCasesSearch(@RequestBody HashMap<String, String> search) {
+		return new ResponseEntity<>(caseService.clientCasesSearch(search).stream()
+									.map(c ->  new CaseDTO(c))
+									.collect(Collectors.toList()), HttpStatus.OK);
 	}
 }
