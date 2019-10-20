@@ -13,7 +13,7 @@
     </ul>
   </div>
 </nav>
-<div class="wrapper">
+<div class="wrapper" *ngIf='!showErrorMessage'>
   <div class="overlay" *ngIf="showSpinner">
     <div class="spinner-wrapper">    
       <div class="text-center">
@@ -23,7 +23,6 @@
       </div>
     </div>
   </div>
-
   <div class='bg-secondary full-height' *ngIf='!showErrorMessage'>
     <div class="container bg-white w-75 full-height">
       <router-outlet></router-outlet>

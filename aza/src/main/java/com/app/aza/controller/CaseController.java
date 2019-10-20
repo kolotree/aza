@@ -21,12 +21,10 @@ import com.app.aza.dto.CaseDTO;
 import com.app.aza.model.Case;
 import com.app.aza.service.CaseService;
 import com.app.aza.service.MailService;
-import com.app.aza.serviceimpl.CaseNotFoundException;
-import com.app.aza.serviceimpl.UserNotFoundException;
 
 @RestController
 @CrossOrigin(origins="http://localhost:4200")
-public class CaseController {
+public class CaseController extends BaseController {
 	
 	@Autowired
 	private CaseService caseService;
@@ -48,27 +46,22 @@ public class CaseController {
 			value = "/case/{id}",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getCase(@PathVariable("id") Long id) {
-		try {
-			return new ResponseEntity<>(new CaseDTO(caseService.findOne(id)), HttpStatus.OK);
-		} catch (CaseNotFoundException e) {	
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<?> getCase(@PathVariable("id") Long id) throws Exception {
+		return new ResponseEntity<>(new CaseDTO(caseService.findOne(id)), HttpStatus.OK);
 	}
+	
+	
 
 	@RequestMapping(
 			value = "/case",
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> create(@RequestBody CaseDTO caseDTO) {
-		try {
-			Case c = caseService.createOrUpdate(new Case(caseDTO));
-			mailService.newCase(c);
-			return new ResponseEntity<>(new CaseDTO(c), HttpStatus.OK);
-		} catch (UserNotFoundException | CaseNotFoundException | MessagingException e) {	
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<?> create(@RequestBody CaseDTO caseDTO) throws Exception, MessagingException {
+		Case c = caseService.createOrUpdate(new Case(caseDTO));
+		mailService.newCase(c);
+		return new ResponseEntity<>(new CaseDTO(c), HttpStatus.OK);
+		
 	}
 	
 	@RequestMapping(
@@ -76,14 +69,10 @@ public class CaseController {
 			method = RequestMethod.PUT,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> updateStatus(@RequestBody CaseDTO caseDTO) {
-		try {
-			Case c = caseService.updateStatus(new Case(caseDTO));
-			mailService.caseChangeStatus(c);
-			return new ResponseEntity<>(new CaseDTO(c), HttpStatus.OK);
-		} catch (CaseNotFoundException | MessagingException e) {		
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<?> updateStatus(@RequestBody CaseDTO caseDTO) throws Exception, MessagingException {
+		Case c = caseService.updateStatus(new Case(caseDTO));
+		mailService.caseChangeStatus(c);
+		return new ResponseEntity<>(new CaseDTO(c), HttpStatus.OK);
 	}
 	
 	@RequestMapping(

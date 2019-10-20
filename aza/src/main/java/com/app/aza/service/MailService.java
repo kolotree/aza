@@ -4,7 +4,6 @@ import javax.mail.MessagingException;
 
 import com.app.aza.model.Case;
 import com.app.aza.model.Document;
-import com.app.aza.model.User;
 
 public interface MailService {
 	void newUser (String email, String password) throws MessagingException;
