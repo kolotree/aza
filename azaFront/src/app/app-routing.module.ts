@@ -9,17 +9,18 @@ import { CaseAddComponent } from './case/case-add/case-add.component';
 import { UserComponent } from './user/user.component';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { GuardService } from './services/guard.service';
 
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent},
-  { path: 'client', component: ClientsListComponent },
-  { path: 'client/:id', component: ClientDetailsComponent},
-  { path: 'case', component: CaseListComponent },
-  { path: 'case/:id', component: CaseDetailsComponent },
-  { path: 'addClient', component: ClientAddComponent },
-  { path: 'addCase/:id', component: CaseAddComponent},
-  { path: 'user/:id', component: UserComponent},
+  { path: 'login', component: LoginComponent },
+  { path: 'client', component: ClientsListComponent, canActivate: [GuardService] },
+  { path: 'client/:id', component: ClientDetailsComponent, canActivate: [GuardService] },
+  { path: 'case', component: CaseListComponent, canActivate: [GuardService] },
+  { path: 'case/:id', component: CaseDetailsComponent, canActivate: [GuardService] },
+  { path: 'addClient', component: ClientAddComponent, canActivate: [GuardService] },
+  { path: 'addCase/:id', component: CaseAddComponent, canActivate: [GuardService] },
+  { path: 'user/:id', component: UserComponent, canActivate: [GuardService] },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
